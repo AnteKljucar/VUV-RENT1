@@ -1,0 +1,10 @@
+C:\Users\Akljucar\source\repos\VUV-RENT\VUV-RENT\bin\Debug\VUV-RENT.exe.config
+C:\Users\Akljucar\source\repos\VUV-RENT\VUV-RENT\bin\Debug\VUV-RENT.exe
+C:\Users\Akljucar\source\repos\VUV-RENT\VUV-RENT\bin\Debug\VUV-RENT.pdb
+C:\Users\Akljucar\source\repos\VUV-RENT\VUV-RENT\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Akljucar\source\repos\VUV-RENT\VUV-RENT\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Akljucar\source\repos\VUV-RENT\VUV-RENT\obj\Debug\VUV-RENT.csproj.AssemblyReference.cache
+C:\Users\Akljucar\source\repos\VUV-RENT\VUV-RENT\obj\Debug\VUV-RENT.csproj.CoreCompileInputs.cache
+C:\Users\Akljucar\source\repos\VUV-RENT\VUV-RENT\obj\Debug\VUV-RENT.csproj.CopyComplete
+C:\Users\Akljucar\source\repos\VUV-RENT\VUV-RENT\obj\Debug\VUV-RENT.exe
+C:\Users\Akljucar\source\repos\VUV-RENT\VUV-RENT\obj\Debug\VUV-RENT.pdb
