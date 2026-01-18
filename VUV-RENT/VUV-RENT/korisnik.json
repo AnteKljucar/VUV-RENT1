@@ -1,38 +1,47 @@
 [
   {
     "id": 0,
-    "ime": "Ante",
-    "prezime": "Klju�ar",
-    "korisnickoIme": null,
-    "password": null,
-    "OIB": "1234567891",
-    "Admin": true
-  },
-  {
-    "id": 1,
-    "ime": "Ante",
-    "prezime": "Klju�ar",
-    "korisnickoIme": null,
-    "password": "123",
-    "OIB": "1234567891",
-    "Admin": false
-  },
-  {
-    "id": 2,
     "ime": "Josip",
     "prezime": "Kljucar",
     "korisnickoIme": "JKljucar",
     "password": "101dorat",
-    "OIB": "01234567910",
-    "Admin": false
+    "OIB": "12345679101",
+    "Admin": true
   },
   {
-    "id": 3,
+    "id": 1,
     "ime": "Marko",
     "prezime": "Kljucar",
     "korisnickoIme": "MKljucar",
     "password": "101dorat",
-    "OIB": "01234567911",
+    "OIB": "12345679111",
+    "Admin": false
+  },
+  {
+    "id": 2,
+    "ime": "Ante",
+    "prezime": "Kljucar",
+    "korisnickoIme": "AKljucar",
+    "password": "101dorat",
+    "OIB": "12345678919",
+    "Admin": false
+  },
+  {
+    "id": 3,
+    "ime": "Ante",
+    "prezime": "Kljucar",
+    "korisnickoIme": "101",
+    "password": "101dorat",
+    "OIB": "12345678911",
+    "Admin": false
+  },
+  {
+    "id": 4,
+    "ime": "Ante",
+    "prezime": "Kljucar",
+    "korisnickoIme": "1101",
+    "password": "101",
+    "OIB": "12345678911",
     "Admin": false
   }
 ]

@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace VUV_RENT
 {
-    public struct unosVozilaAuto
+    public struct UnosVozilaAuto
     {
         public int id; //id vozila krece od 0
         public string marka; //proizvodajc
@@ -18,7 +18,7 @@ namespace VUV_RENT
         public DateTime registracija; //registracija datum
         public int cjena; //cjena po danu
         public bool dostupnost; //dostupnost da ne, odnosi se na provjeru da li je vozilo trenutno rentano
-        public unosVozilaAuto(int a, string b, string c, string d, int e, int f, int g, DateTime h, int i, bool j)
+        public UnosVozilaAuto(int a, string b, string c, string d, int e, int f, int g, DateTime h, int i, bool j)
         {
             id = a;
             marka = b;
@@ -32,7 +32,7 @@ namespace VUV_RENT
             dostupnost = j;
         }
     }
-    public struct unosVozilaMotor
+    public struct UnosVozilaMotor
     {
         public int id; //id vozila krece od 0
         public string marka; //proizvodajc
@@ -44,7 +44,7 @@ namespace VUV_RENT
         public DateTime registracija; //registracija datum
         public int cjena; //cjena po danu
         public bool dostupnost; //dostupnost da ne, odnosi se na provjeru da li je vozilo trenutno rentano
-        public unosVozilaMotor(int a, string b, string c, string d, int e, int f, int g, DateTime h, int i, bool j)
+        public UnosVozilaMotor(int a, string b, string c, string d, int e, int f, int g, DateTime h, int i, bool j)
         {
             id = a;
             marka = b;
@@ -58,7 +58,7 @@ namespace VUV_RENT
             dostupnost = j;
         }
     }
-    public struct korisnik
+    public struct Korisnik
     {
         public int id; //id korisnika
         public string ime; //ime korisnika
@@ -68,7 +68,7 @@ namespace VUV_RENT
         public string OIB; //oib
         public bool Admin; //provjera da li je korisnik administrator ili ne, odkljucav mogucnost modificiranje/dodavannje/brisanje podataka iz liste vozila
 
-        public korisnik(int a, string b, string c, string d, string e, string f, bool g)
+        public Korisnik(int a, string b, string c, string d, string e, string f, bool g)
         {
             id = 1;
             ime = b;
@@ -83,39 +83,81 @@ namespace VUV_RENT
     class Program
     {
 
-        static korisnik register(int b)
+        static Korisnik register(int b)
         {
-            korisnik noviUnos = new korisnik();
-            noviUnos.id = b; 
-            Console.WriteLine("unesite svoje ime:");
-            noviUnos.ime = Console.ReadLine();
-            Console.WriteLine("Unesite svoje prezime:");
-            noviUnos.prezime = Console.ReadLine();
-            Console.WriteLine("Unesite svoj username ili korisnicko ime: ");
-            noviUnos.korisnickoIme = Console.ReadLine();
-            passReset:
-            Console.WriteLine("Unesite lozinku: ");
-            string password = Console.ReadLine();
-            Console.WriteLine("Potvrdite lozinku: ");
-            string confPassword = Console.ReadLine();
-            if (password != confPassword)
+            Korisnik noviUnos = new Korisnik();
+            string json = "";
+            StreamReader sr = new StreamReader("C:\\Users\\Akljucar\\source\\repos\\VUV-RENT\\VUV-RENT\\korisnik.json"); //StreamReader sr se dodaje putanja do korisnik.json
+            using (sr)
             {
-                Console.WriteLine("Ponovo unesite lozinku, potvrda lozinke nije uspjela.");
-                goto passReset;
+                json = sr.ReadToEnd();
             }
-            else
+
+            List<Korisnik> lkorisnik = new List<Korisnik>();
+            lkorisnik = JsonConvert.DeserializeObject<List<Korisnik>>(json);
+            noviUnos.id = b;
+            noviUnos.ime = "";
+            noviUnos.korisnickoIme = "";
+            noviUnos.prezime = "";
+            noviUnos.password = "";
+            noviUnos.OIB = "";
+            while (noviUnos.ime == "") {
+                Console.WriteLine("unesite svoje ime:");
+                noviUnos.ime = Console.ReadLine();
+            }
+            while (noviUnos.prezime == "") {
+                Console.WriteLine("Unesite svoje prezime:");
+                noviUnos.prezime = Console.ReadLine();
+            }
+            while (noviUnos.korisnickoIme == "") {
+                Console.WriteLine("Unesite svoj username ili korisnicko ime: ");
+                noviUnos.korisnickoIme = Console.ReadLine();
+            }
+            while (noviUnos.password == "") {
+                Console.WriteLine("Unesite lozinku: ");
+                string password = Console.ReadLine();
+                Console.WriteLine("Potvrdite lozinku: ");
+                string confPassword = Console.ReadLine();
+                if (password != confPassword)
+                {
+                    Console.WriteLine("Ponovo unesite lozinku, potvrda lozinke nije uspjela.");
+                    noviUnos.password = "";
+                }
+                else
+                {
+                    noviUnos.password = password;
+                }
+            }
+
+            while (noviUnos.OIB == "")
             {
-                noviUnos.password = password;
-            }
-            oibReset:
-            Console.WriteLine("Unesite vas OIB:");
-            noviUnos.OIB = Console.ReadLine();
-            if (noviUnos.OIB.Length != 11)
-            {
-                Console.WriteLine("Unos OIB-a je neispravan.");
-                goto oibReset;
-            }
-            noviUnos.Admin = false;
+                Console.WriteLine("Unesite vas OIB:");
+                noviUnos.OIB = Console.ReadLine();
+
+                if (noviUnos.OIB.Length != 11)
+                {
+                    Console.WriteLine("Unos OIB-a je neispravan.");
+                    noviUnos.OIB = "";
+                    continue;
+                }
+   
+                bool postoji = false;
+                foreach (Korisnik k in lkorisnik)
+                {
+                    if (k.OIB == noviUnos.OIB)
+                    {
+                        postoji = true;
+                        break;
+                    }
+                }
+
+                if (postoji)
+                {
+                    Console.WriteLine("Korisnik s tim OIB-om vec postoji.");
+                    noviUnos.OIB = "";
+                }
+        }
+        noviUnos.Admin = false;
 
             return noviUnos;
         }
@@ -124,7 +166,7 @@ namespace VUV_RENT
 
 
 
-        static void SpremiKorisnike(List<korisnik> korisnici, string path)
+        static void SpremiKorisnike(List<Korisnik> korisnici, string path)
         {
             string noviJson = JsonConvert.SerializeObject(korisnici, Formatting.Indented);
             File.WriteAllText(path, noviJson);
@@ -133,6 +175,12 @@ namespace VUV_RENT
 
 
 
+        static Korisnik RentACar() { }
+        static Korisnik RentABike() { }
+        static Korisnik RentABicikl() { }
+        static Korisnik unosRente() { }
+        static Korisnik unosRente() { }
+        static Korisnik unosRente() { }
 
 
 
@@ -148,7 +196,45 @@ namespace VUV_RENT
 
 
 
+        static Korisnik GetTrenutniKorisnik(List<Korisnik> korisnici, int trenutniId)
+        {
+            foreach (Korisnik k in korisnici)
+            {
+                if (k.id == trenutniId)
+                    return k;
+            }
+            return new Korisnik();
+        }
 
+        static void RemoveVehicleMenu()
+        {
+            Console.WriteLine("\n--- REMOVE VEHICLE ---");
+            Console.WriteLine("1 - Remove bike");
+            Console.WriteLine("2 - Remove car");
+            Console.WriteLine("3 - Remove bicikl");
+            Console.Write("Odabir: ");
+
+            int izbor = Convert.ToInt32(Console.ReadLine());
+
+            switch (izbor)
+            {
+                case 1:
+                    Console.WriteLine("Brisanje BIKE vozila");
+                    break;
+
+                case 2:
+                    Console.WriteLine("Brisanje CAR vozila");
+                    break;
+
+                case 3:
+                    Console.WriteLine("Brisanje BICIKL vozila");
+                    break;
+
+                default:
+                    Console.WriteLine("Pogrešan unos.");
+                    break;
+            }
+        }
 
 
 
@@ -164,8 +250,8 @@ namespace VUV_RENT
                 json = sr.ReadToEnd();
             }
 
-            List<korisnik> lkorisnik = new List<korisnik>();
-            lkorisnik = JsonConvert.DeserializeObject<List<korisnik>>(json);
+            List<Korisnik> lkorisnik = new List<Korisnik>();
+            lkorisnik = JsonConvert.DeserializeObject<List<Korisnik>>(json);
 
             
 
@@ -184,7 +270,7 @@ namespace VUV_RENT
                         string korLozCh = Console.ReadLine();
 
                         bool found = false;
-                        foreach (korisnik user in lkorisnik)
+                        foreach (Korisnik user in lkorisnik)
                         {
                             if (user.korisnickoIme == korImeCh &&
                                 user.password == korLozCh)
@@ -216,74 +302,87 @@ namespace VUV_RENT
 
             }
             }
-            ponoviOdabirIzDva:
-            Console.WriteLine("Izbornik:");
-            Console.WriteLine("1. Renta vozila\t2. Unos novog vozila\t3. Manualni unos novog korisnika\t4. Azuriranje postojeceg vozila\t5. Azuriranje postojece rente\t6. Azuracija podatka korisnika");
-            int izDvaOdb = Convert.ToInt32(Console.ReadLine());
+            Korisnik trenutniKorisnik = GetTrenutniKorisnik(lkorisnik, idTrenutnogKorisnika);
+            Console.Clear();
+            bool izbornikAktivan = true;
+            while (izbornikAktivan)
+            {
+                Console.WriteLine("\n--- DOBRO DOŠLI ---");
+                Console.WriteLine("\n--- GLAVNI IZBORNIK ---");
+                Console.WriteLine("1 - Rent-a-car");
+                Console.WriteLine("2 - Rent-a-bike");
+                Console.WriteLine("3 - Rent-a-bicikl");
+                Console.WriteLine("4 - Log out");
 
-            switch (izDvaOdb) {
-                case 1:
-                    break;
+                if (trenutniKorisnik.Admin)
+                {
+                    Console.WriteLine("\n--- ADMIN OPCIJE ---");
+                    Console.WriteLine("5 - Edit user");
+                    Console.WriteLine("6 - Edit bike");
+                    Console.WriteLine("7 - Edit car");
+                    Console.WriteLine("8 - Edit bicikl");
+                    Console.WriteLine("9 - Edit rent");
+                    Console.WriteLine("10 - Remove user");
+                    Console.WriteLine("11 - Remove vehicle");
+                }
 
-                case 2:
+                Console.Write("\nOdabir: ");
+                int izbor = Convert.ToInt32(Console.ReadLine());
 
-                    break;
-                case 3:
-                    foreach (korisnik users in lkorisnik)
-                    {
-                        if (users.id == idTrenutnogKorisnika)
-                        {
-                            if (users.Admin == true) {
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Nema ovlasti za ovu mogucnost!!!");
-                            goto ponoviOdabirIzDva;
-                        }
-                    }
-                    break;
-                case 5:
-                    foreach (korisnik users in lkorisnik)
-                    {
-                        if (users.id == idTrenutnogKorisnika)
-                        {
-                            if (users.Admin == true)
-                            {
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Nema ovlasti za ovu mogucnost!!!");
-                            goto ponoviOdabirIzDva;
+                switch (izbor)
+                {
+                    case 1:
+                        Console.WriteLine("Rent-a-car odabrano");
+                        break;
 
-                        }
-                    }
+                    case 2:
+                        Console.WriteLine("Rent-a-bike odabrano");
+                        break;
 
-                    break;
-                case 6:
-                    foreach (korisnik users in lkorisnik)
-                    {
-                        if (users.id == idTrenutnogKorisnika)
-                        {
-                            if (users.Admin == true)
-                            {
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Nema ovlasti za ovu mogucnost!!!");
-                            goto ponoviOdabirIzDva;
-                        }
-                    }
-                    break;
+                    case 3:
+                        Console.WriteLine("Rent-a-bicikl odabrano");
+                        break;
 
-                default:
-                    Console.WriteLine("Odabrali ste nešto što nije ponudjeno!!!");
-                    goto ponoviOdabirIzDva;         
+                    case 4:
+                        Console.WriteLine("Odjava uspješna.");
+                        izbornikAktivan = false;
+                        break;
+
+                    case 5 when trenutniKorisnik.Admin:
+                        Console.WriteLine("Edit user");
+                        break;
+
+                    case 6 when trenutniKorisnik.Admin:
+                        Console.WriteLine("Edit bike");
+                        break;
+
+                    case 7 when trenutniKorisnik.Admin:
+                        Console.WriteLine("Edit car");
+                        break;
+
+                    case 8 when trenutniKorisnik.Admin:
+                        Console.WriteLine("Edit bicikl");
+                        break;
+
+                    case 9 when trenutniKorisnik.Admin:
+                        Console.WriteLine("Edit rent");
+                        break;
+
+                    case 10 when trenutniKorisnik.Admin:
+                        Console.WriteLine("Remove user");
+                        break;
+
+                    case 11 when trenutniKorisnik.Admin:
+                        RemoveVehicleMenu();
+                        break;
+
+                    default:
+                        Console.WriteLine("Neispravan odabir ili nemate ovlasti.");
+                        break;
+                }
             }
 
-            foreach(korisnik users in lkorisnik)
+            foreach (Korisnik users in lkorisnik)
             {
                 if(users.id == idTrenutnogKorisnika)
                 {
