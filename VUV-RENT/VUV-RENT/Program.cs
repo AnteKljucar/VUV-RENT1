@@ -175,9 +175,44 @@ namespace VUV_RENT
 
 
 
-        static Korisnik RentACar() { }
-        static Korisnik RentABike() { }
-        static Korisnik RentABicikl() { }
+        static Korisnik rentACar() {
+            Console.WriteLine("Rent-a-car odabrano");
+            string json = "";
+            StreamReader sr = new StreamReader("C:\\Users\\Akljucar\\source\\repos\\VUV-RENT\\VUV-RENT\\auti.json"); //StreamReader sr se dodaje putanja do korisnik.json
+            using (sr)
+            {
+                json = sr.ReadToEnd();
+            }
+
+            List<Korisnik> lCar = new List<Korisnik>();
+            lCar = JsonConvert.DeserializeObject<List<Korisnik>>(json);
+
+        }
+        static Korisnik rentABike() {
+            Console.WriteLine("Rent-a-bike odabrano");
+            string json = "";
+            StreamReader sr = new StreamReader("C:\\Users\\Akljucar\\source\\repos\\VUV-RENT\\VUV-RENT\\motori.json"); //StreamReader sr se dodaje putanja do korisnik.json
+            using (sr)
+            {
+                json = sr.ReadToEnd();
+            }
+
+            List<Korisnik> lMotor = new List<Korisnik>();
+            lMotor = JsonConvert.DeserializeObject<List<Korisnik>>(json);
+
+        }
+        static Korisnik rentABicikl() {
+            string json = "";
+            StreamReader sr = new StreamReader("C:\\Users\\Akljucar\\source\\repos\\VUV-RENT\\VUV-RENT\\motori.json"); //StreamReader sr se dodaje putanja do korisnik.json
+            using (sr)
+            {
+                json = sr.ReadToEnd();
+            }
+
+            List<Korisnik> lMotor = new List<Korisnik>();
+            lMotor = JsonConvert.DeserializeObject<List<Korisnik>>(json);
+
+        }
         static Korisnik unosRente() { }
         static Korisnik unosRente() { }
         static Korisnik unosRente() { }
@@ -332,11 +367,11 @@ namespace VUV_RENT
                 switch (izbor)
                 {
                     case 1:
-                        Console.WriteLine("Rent-a-car odabrano");
+                        rentACar();
                         break;
 
                     case 2:
-                        Console.WriteLine("Rent-a-bike odabrano");
+                        rentABike();
                         break;
 
                     case 3:
@@ -381,22 +416,7 @@ namespace VUV_RENT
                         break;
                 }
             }
-
-            foreach (Korisnik users in lkorisnik)
-            {
-                if(users.id == idTrenutnogKorisnika)
-                {
-                    Console.WriteLine("ID: " + users.id);
-                    Console.WriteLine("Ime: " + users.ime);
-                    Console.WriteLine("Prezime: " + users.prezime);
-                    Console.WriteLine("OIB: " + users.OIB);
-                    Console.WriteLine("Korisničko ime: " + users.korisnickoIme);
-                    Console.WriteLine("Password: " + users.password);
-                }
-            }
-
             
-
             Console.ReadLine();
 
 

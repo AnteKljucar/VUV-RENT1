@@ -1,3 +1,75 @@
-{
+[
+  {
+    "id": 0,
+    "marka": "Yamaha",
+    "model": "R1",
+    "motor": "R1",
+    "snaga": 45,
+    "KM": 16800,
+    "godina": 2015,
+    "registracija": "2026-05-19",
+    "cjena": 20,
+    "dostupnost": true
+  },
+  {
+    "id": 1,
+    "marka": "Suzuki",
+    "model": "GSXR 1000",
+    "motor": "GSXR",
+    "snaga": 44,
+    "KM": 14800,
+    "godina": 2016,
+    "registracija": "2026-08-19",
+    "cjena": 20,
+    "dostupnost": true
+  },
+  {
+    "id": 2,
+    "marka": "Yamaha",
+    "model": "R6",
+    "motor": "R6",
+    "snaga": 40,
+    "KM": 11400,
+    "godina": 2020,
+    "registracija": "2026-01-19",
+    "cjena": 20,
+    "dostupnost": true
+  },
+  {
+    "id": 3,
+    "marka": "Yamaha",
+    "model": "R1",
+    "motor": "R1",
+    "snaga": 45,
+    "KM": 14800,
+    "godina": 2015,
+    "registracija": "2026-05-19",
+    "cjena": 20,
+    "dostupnost": true
+  },
+  {
+    "id": 4,
+    "marka": "Yamaha",
+    "model": "R1",
+    "motor": "R1",
+    "snaga": 45,
+    "KM": 18800,
+    "godina": 2015,
+    "registracija": "2026-05-19",
+    "cjena": 20,
+    "dostupnost": true
+  },
+  {
+    "id": 5,
+    "marka": "Yamaha",
+    "model": "R1",
+    "motor": "R1",
+    "snaga": 45,
+    "KM": 9800,
+    "godina": 2015,
+    "registracija": "2026-05-19",
+    "cjena": 20,
+    "dostupnost": true
+  }
 
-}
+]
