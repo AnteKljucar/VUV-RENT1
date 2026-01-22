@@ -51,11 +51,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="auti.json" />
+    <None Include="kategorija.json" />
+    <None Include="vozila.json" />
     <None Include="korisnik.json" />
     <None Include="packages.config" />
-    <None Include="rent.json" />
-    <None Include="motori.json" />
+    <None Include="najam.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="logBook.txt" />
