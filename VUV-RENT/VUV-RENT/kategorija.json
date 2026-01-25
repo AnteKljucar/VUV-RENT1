@@ -1,53 +1,44 @@
 [
   {
     "id": 0,
-    "marka": "Audi",
-    "model": "A3",
-    "motor": "2.0 TDI",
-    "snaga": 103,
-    "KM": 113000,
-    "godina": 2017,
-    "registracija": "2026-03-19",
-    "cjena": 30,
-    "dostupnost": true
+    "kategorija": "Avant"
   },
   {
     "id": 1,
-    "marka": "Audi",
-    "model": "A3",
-    "motor": "2.0 TDI",
-    "snaga": 103,
-    "KM": 114000,
-    "godina": 2017,
-    "registracija": "2026-03-19",
-    "cjena": 30,
-    "dostupnost": true
+    "kategorija": "Limuzina"
   },
   {
     "id": 2,
-    "marka": "Audi",
-    "model": "A3",
-    "motor": "2.0 TDI",
-    "snaga": 103,
-    "KM": 115000,
-    "godina": 2017,
-    "registracija": "2026-03-19",
-    "cjena": 30,
-    "dostupnost": true
+    "kategorija": "Sportback"
   },
   {
     "id": 3,
-    "marka": "Audi",
-    "model": "A3",
-    "motor": "2.0 TDI",
-    "snaga": 103,
-    "KM": 117000,
-    "godina": 2017,
-    "registracija": "2026-03-19",
-    "cjena": 30,
-    "dostupnost": true
+    "kategorija": "Hatchback"
+  },
+  {
+    "id": 4,
+    "kategorija": "Coupe"
+  },
+  {
+    "id": 5,
+    "kategorija": "SUV"
+  },
+  {
+    "id": 6,
+    "kategorija": "Sportak"
+  },
+  {
+    "id": 7,
+    "kategorija": "Skuter"
+
+  },
+  {
+    "id": 8,
+    "kategorija": "Naked"
+  },
+  {
+    "id": 9,
+    "kategorija": "Bicikl"
   }
-
-
 
 ]

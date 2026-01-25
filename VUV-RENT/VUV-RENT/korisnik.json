@@ -36,12 +36,21 @@
     "Admin": false
   },
   {
-    "id": 4,
+    "id": 5,
     "ime": "Ante",
     "prezime": "Kljucar",
-    "korisnickoIme": "1101",
-    "password": "101",
-    "OIB": "12345678911",
+    "korisnickoIme": "Uns",
+    "password": "101dorat",
+    "OIB": "12345678912",
+    "Admin": false
+  },
+  {
+    "id": 6,
+    "ime": "Ante",
+    "prezime": "Kljucar",
+    "korisnickoIme": "Uns",
+    "password": "101dorat",
+    "OIB": "12345678913",
     "Admin": false
   }
 ]
