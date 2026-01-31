@@ -52,5 +52,14 @@
     "password": "101dorat",
     "OIB": "12345678913",
     "Admin": false
+  },
+  {
+    "id": 7,
+    "ime": "a",
+    "prezime": "b",
+    "korisnickoIme": "c",
+    "password": "1",
+    "OIB": "12412412455",
+    "Admin": false
   }
 ]

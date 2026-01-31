@@ -131,40 +131,34 @@ namespace VUV_RENT
 
     class Program
     {
-        static Korisnik register(int b, string korisnikPutanja)
+        static Korisnik Register(int b, string korisnikPutanja)
         {
             Korisnik noviUnos = new Korisnik();
-            string json = "";
-            StreamReader sr = new StreamReader(korisnikPutanja); 
-            using (sr)
-            {
-                json = sr.ReadToEnd();
-            }
+            string jsonKorisnik = File.ReadAllText(korisnikPutanja);
+            List<Korisnik> lKorisnika = JsonConvert.DeserializeObject<List<Korisnik>>(jsonKorisnik);
 
-            List<Korisnik> lkorisnik = new List<Korisnik>();
-            lkorisnik = JsonConvert.DeserializeObject<List<Korisnik>>(json);
-            noviUnos.id = b;
+            noviUnos.id = lKorisnika[lKorisnika.Count - 1].id+1;
             noviUnos.ime = "";
             noviUnos.korisnickoIme = "";
             noviUnos.prezime = "";
             noviUnos.password = "";
             noviUnos.OIB = "";
             while (noviUnos.ime == "") {
-                Console.WriteLine("unesite svoje ime:");
+                Console.WriteLine("Ime:");
                 noviUnos.ime = Console.ReadLine();
             }
             while (noviUnos.prezime == "") {
-                Console.WriteLine("Unesite svoje prezime:");
+                Console.WriteLine("Prezime:");
                 noviUnos.prezime = Console.ReadLine();
             }
             while (noviUnos.korisnickoIme == "") {
-                Console.WriteLine("Unesite svoj username ili korisnicko ime: ");
+                Console.WriteLine("Username ili korisničko ime: ");
                 noviUnos.korisnickoIme = Console.ReadLine();
             }
             while (noviUnos.password == "") {
-                Console.WriteLine("Unesite lozinku: ");
+                Console.WriteLine("Lozinka: ");
                 string password = Console.ReadLine();
-                Console.WriteLine("Potvrdite lozinku: ");
+                Console.WriteLine("Potvrda lozinke: ");
                 string confPassword = Console.ReadLine();
                 if (password != confPassword)
                 {
@@ -177,20 +171,35 @@ namespace VUV_RENT
                 }
             }
 
+
+
+
+
+
+
+
             while (noviUnos.OIB == "")
             {
-                Console.WriteLine("Unesite vas OIB:");
+                Console.WriteLine("Unesite vaš OIB:");
                 noviUnos.OIB = Console.ReadLine();
 
                 if (noviUnos.OIB.Length != 11)
                 {
-                    Console.WriteLine("Unos OIB-a je neispravan.");
+                    Console.WriteLine("OIB mora sadržavati točno 11 znamenki.");
                     noviUnos.OIB = "";
                     continue;
                 }
-   
+
+                long oibBroj;
+                if (!long.TryParse(noviUnos.OIB, out oibBroj))
+                {
+                    Console.WriteLine("OIB smije sadržavati samo brojeve.");
+                    noviUnos.OIB = "";
+                    continue;
+                }
+
                 bool postoji = false;
-                foreach (Korisnik k in lkorisnik)
+                foreach (Korisnik k in lKorisnika)
                 {
                     if (k.OIB == noviUnos.OIB)
                     {
@@ -201,11 +210,12 @@ namespace VUV_RENT
 
                 if (postoji)
                 {
-                    Console.WriteLine("Korisnik s tim OIB-om vec postoji.");
+                    Console.WriteLine("Korisnik s tim OIB-om već postoji.");
                     noviUnos.OIB = "";
                 }
-        }
-        noviUnos.Admin = false;
+            }
+
+            noviUnos.Admin = false;
 
             return noviUnos;
         }
@@ -249,7 +259,7 @@ namespace VUV_RENT
         
         
 
-        static void ponudaVozila(string ponudaVozila, string putanjaKategorija) {
+        static void PonudaVozila(string ponudaVozila, string putanjaKategorija) {
             string json = "";
             StreamReader sr = new StreamReader(ponudaVozila); 
             using (sr)
@@ -285,11 +295,11 @@ namespace VUV_RENT
             ConsoleTableBuilder
                 .From(tableData)
                 .WithTitle("Dostupna Vozila")
-                .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
+                .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cijena")
                 .ExportAndWriteLine();
 
 
-            Console.WriteLine("Pritisnite ENTER za povrat na izbornik");
+            Console.WriteLine("Pritisnite ENTER za povrat");
             Console.ReadLine();
             Console.Clear();
 
@@ -309,7 +319,7 @@ namespace VUV_RENT
 
 
 
-        static void pretrazivanjeVozila(string putanjaVozila, string putanjaKategorija) {
+        static void PretrazivanjeVozila(string putanjaVozila, string putanjaKategorija) {
 
             string json = "";
             StreamReader sr = new StreamReader(putanjaVozila); 
@@ -320,6 +330,7 @@ namespace VUV_RENT
 
             List<Vozila> lVozila = new List<Vozila>();
             lVozila = JsonConvert.DeserializeObject<List<Vozila>>(json);
+
             string json2 = "";
             StreamReader sr2 = new StreamReader(putanjaKategorija); 
             using (sr2)
@@ -332,20 +343,19 @@ namespace VUV_RENT
             lKategorija = JsonConvert.DeserializeObject<List<Kategorija>>(json2);
             bool izbornikPretAktivan = true;
 
-
+            Console.Clear();
             while (izbornikPretAktivan)
             {
-                Console.WriteLine("\n--- Izbornik za pretrazivanje ---");
-                Console.WriteLine("Odaberite kriterij pretrazivanja");
-                Console.WriteLine("1 - Tipu vozila");
-                Console.WriteLine("2 - Marki vozila");
-                Console.WriteLine("3 - Modelu vozila");
-                Console.WriteLine("4 - Motoru vozila");
-                Console.WriteLine("5 - Snaga vozila");
-                Console.WriteLine("6 - Kilometrazi");
-                Console.WriteLine("7 - Godini proizvodnje");
-                Console.WriteLine("8 - Cjeni rente");
-                Console.WriteLine("9 - Povrat");
+                Console.Clear();
+                Console.WriteLine("\n--- Izbornik ---");
+                Console.WriteLine("\n1 - Pretraga");
+                Console.WriteLine("\n--- Filteri ---");
+                Console.WriteLine("\n2- Kategorija");
+                Console.WriteLine("3 - Snaga vozila");
+                Console.WriteLine("4 - Kilometrazi");
+                Console.WriteLine("5 - Godini proizvodnje");
+                Console.WriteLine("6 - Cjeni rente");
+                Console.WriteLine("7 - Povrat");
                 int izbor = -1;
                 while (izbor == -1)
                 {
@@ -362,246 +372,67 @@ namespace VUV_RENT
                 {
                     case 1:
                         Console.Clear();
-                        Console.WriteLine("1 - Tipu vozila");
-                        bool izbornikTipVozilaAktivan = true;
-                        while (izbornikTipVozilaAktivan) {
-                            Console.Clear();
-                            Console.WriteLine("--- Izbornik tipa vozila ---");
-                            Console.WriteLine("1 - Auto");
-                            Console.WriteLine("2 - Motor");
-                            Console.WriteLine("3 - Bicikl");
-                            Console.WriteLine("4 - Povratak");
+                        string[] searchVozila = new string[lVozila.Count];
+                        var tableDataSearch = new List<List<object>>();
+                        var tableDataSearchNajmovi = new List<List<object>>();
 
-                            int izborTipa = -1;
-                            while (izborTipa == -1)
+                        for (int i = 0; i < lVozila.Count; i++)
+                        {
+                            foreach (Vozila v in lVozila)
                             {
-                                Console.WriteLine("Odabir");
-                                string input = Console.ReadLine();
-                                if (!int.TryParse(input, out izborTipa))
+                                if (i == v.id)
                                 {
-                                    Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
-                                    izborTipa = -1;
+                                    searchVozila[i] = (
+                                    lVozila[i].marka + " " +
+                                    lVozila[i].model + " " +
+                                    lVozila[i].motor + " " + 
+                                    lKategorija.First(k => k.id == v.kategorija).kategorija
+                                    ).ToLower();
                                 }
-                            }
-
-                            switch (izborTipa) {
-                                case 1:
-                                    Console.Clear();
-                                    Console.WriteLine("1. Auti");
-                                    var tableData = new List<List<object>>();
-                                    foreach (Vozila v in lVozila)
-                                    {
-                                        if(v.tipVozila == "Auto") { }
-                                        if (v.dostupnost)
-                                        {
-                                            tableData.Add(new List<object>()
-                                                {v.id, v.tipVozila, v.marka, v.model, v.motor, v.snaga+"KW", lKategorija.First(k => k.id == v.kategorija).kategorija, v.KM, v.registracija, v.cjena});
-                                        }
-                                    }
-                                    ConsoleTableBuilder
-                                        .From(tableData)
-                                        .WithTitle("Dostupna Vozila")
-                                        .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
-                                        .ExportAndWriteLine();
-
-                                    
-                                    Console.ReadLine();
-                                    break;
-                                case 2:
-                                    Console.Clear();
-                                    Console.WriteLine("2. Motori");
-                                    var tableData2 = new List<List<object>>();
-                                    foreach (Vozila v in lVozila)
-                                    {
-                                        if (v.tipVozila == "Motor")
-                                        {
-                                            if (v.dostupnost)
-                                            {
-                                                tableData2.Add(new List<object>()
-                                                {v.id, v.tipVozila, v.marka, v.model, v.motor, v.snaga, lKategorija.First(k => k.id == v.kategorija).kategorija, v.KM, v.registracija, v.cjena});
-                                            }
-                                        }
-                                    }
-                                    ConsoleTableBuilder
-                                        .From(tableData2)
-                                        .WithTitle("Dostupna Vozila")
-                                        .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
-                                        .ExportAndWriteLine();
-
-                                    Console.ReadLine();
-                                    break;
-                                case 3:
-                                    Console.Clear();
-                                    Console.WriteLine("3. Bicikli");
-                                    var tableData3 = new List<List<object>>();
-                                    foreach (Vozila v in lVozila)
-                                    {
-                                        if (v.tipVozila == "Bicikl")
-                                        {
-                                            
-                                            if (v.dostupnost)
-                                            {
-                                                tableData3.Add(new List<object>()
-                                                {v.id, v.tipVozila, v.marka, v.model, v.motor, v.snaga, lKategorija.First(k => k.id == v.kategorija).kategorija, v.KM, v.registracija, v.cjena});
-                                            }
-                                        }
-                                    }
-                                    ConsoleTableBuilder
-                                        .From(tableData3)
-                                        .WithTitle("Dostupna Vozila")
-                                        .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
-                                        .ExportAndWriteLine();
-                                    Console.ReadLine();
-                                    break;
-                                case 4:
-                                    Console.Clear();
-                                    izbornikTipVozilaAktivan = false;
-                                    break;
-
-                                default:
-                                    Console.WriteLine("Neispravan odabir.");
-                                    break;
 
                             }
-
 
                         }
+
+                        Console.WriteLine("Unesi unos za pretragu (Moguca pretrga po: Marka, Model, Motor, Kategorija): ");
+                        string unosPRetraga = Console.ReadLine();
+                        unosPRetraga = unosPRetraga.ToLower();
+
+                        for (int i = 0; i < searchVozila.Length; i++)
+                        {
+
+                            if (searchVozila[i].Contains(unosPRetraga))
+                            {
+                                foreach (Vozila v in lVozila)
+                                {
+                                    if (i == v.id)
+                                    {
+                                        tableDataSearch.Add(new List<object>(){v.id, v.tipVozila, v.marka, v.model, v.motor, v.snaga+"KW", lKategorija.First(k => k.id == v.kategorija).kategorija, v.KM, v.registracija, v.cjena+"€"});                                      
+                                    }
+                                }
+                            }
+                        }
+                        ConsoleTableBuilder.From(tableDataSearch).WithTitle("Rezultat").WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cijena").ExportAndWriteLine();
+                        Console.WriteLine("Pritisni ENTER za povratak.");
+                        Console.ReadLine();
                         break;
                     case 2:
-                        Console.Clear();
-                        Console.WriteLine("2 - Marki vozila");
-                        bool izbornikMarkaVozilaAktivan = true;
-                        while (izbornikMarkaVozilaAktivan) {
-                            Console.WriteLine("--- Pretraga po marci vozila ---");
-                            Console.WriteLine("Upišite marku vozila koja vas zanima.(Upišite 1 za povratak na predhodni izbornik)");
-                            string markaPretrage = Console.ReadLine();
-                            var tableData4 = new List<List<object>>();
-                            if (markaPretrage != "1") { 
 
-                            foreach(Vozila v in lVozila)
-                            {
-                                if (markaPretrage == v.marka) {
-                                        
-                                        if (v.dostupnost)
-                                        {
-                                            tableData4.Add(new List<object>()
-                                                {v.id, v.tipVozila, v.marka, v.model, v.motor, v.snaga, lKategorija.First(k => k.id == v.kategorija).kategorija, v.KM, v.registracija, v.cjena});
-                                        }
-                                    }
-                                }
-                                ConsoleTableBuilder
-                                    .From(tableData4)
-                                    .WithTitle("Dostupna Vozila")
-                                    .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
-                                    .ExportAndWriteLine();
-                                Console.WriteLine("Pritisnite enter za povratak");
-                                Console.ReadLine();
-                                izbornikMarkaVozilaAktivan = false;
-                                Console.Clear();
-                            }
-                            else {
-                                Console.Clear();
-                                izbornikMarkaVozilaAktivan = false; }
-                        }
-                        break;
                     case 3:
-                        Console.Clear();
-                        Console.WriteLine("3 - Modelu vozilaa");
-                        bool izbornikModelaVozila = true;
-                        while (izbornikModelaVozila)
-                        {
-                            Console.WriteLine("--- Pretraga po modelu vozila ---");
-                            Console.WriteLine("Upišite model vozila koja vas zanima. (Upišite 1 za povratak na predhodni izbornik)");
-                            string modelPretrage = Console.ReadLine();
-                            var tableData5 = new List<List<object>>();
-                            if (modelPretrage != "1")
-                            {
-                                Console.Clear();
-                                foreach (Vozila v in lVozila)
-                                {
-                                    if (modelPretrage == v.model)
-                                    {
-                                        if (v.dostupnost)
-                                        {
-                                            tableData5.Add(new List<object>()
-                                                {v.id, v.tipVozila, v.marka, v.model, v.motor, v.snaga, lKategorija.First(k => k.id == v.kategorija).kategorija, v.KM, v.registracija, v.cjena});
-                                        }
-                                    }
-                                }
-                                ConsoleTableBuilder
-                                    .From(tableData5)
-                                    .WithTitle("Dostupna Vozila")
-                                    .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
-                                    .ExportAndWriteLine();
-                                Console.WriteLine("Pritisnite enter za povratak");
-                                Console.ReadLine();
-                                izbornikModelaVozila = false;
-                                Console.Clear();
-                            }
-                            else
-                            {
-                                Console.Clear();
-                                izbornikModelaVozila = false;
-                            }
-                        }
-                        break;
-                    case 4:
-                        Console.Clear();
-                        Console.WriteLine("4 - Motoru vozila");
-                        bool izbornikMotoraVozila = true;
-                        while (izbornikMotoraVozila)
-                        {
-                            Console.WriteLine("--- Pretraga po motoru vozila ---");
-                            Console.WriteLine("Upišite motoru vozila koja vas zanima. (Upišite 1 za povratak na predhodni izbornik)");
-                            string motorPretrage = Console.ReadLine();
-                            var tableData6 = new List<List<object>>();
-                            if (motorPretrage != "1")
-                            {
-                                Console.Clear();
-                                foreach (Vozila v in lVozila)
-                                {
-                                    if (motorPretrage == v.motor)
-                                    {
-                                        if (v.dostupnost)
-                                        {
-                                            tableData6.Add(new List<object>()
-                                                {v.id, v.tipVozila, v.marka, v.model, v.motor, v.snaga, lKategorija.First(k => k.id == v.kategorija).kategorija, v.KM, v.registracija, v.cjena});
-                                        }
-                                    }
-                                }
-                                ConsoleTableBuilder
-                                    .From(tableData6)
-                                    .WithTitle("Dostupna Vozila")
-                                    .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
-                                    .ExportAndWriteLine();
-                                Console.WriteLine("Pritisnite enter za povratak");
-                                Console.ReadLine();
-                                izbornikMotoraVozila = false;
-                                Console.Clear();
-                            }
-                            else
-                            {
-                                Console.Clear();
-                                izbornikMotoraVozila = false;
-                            }
-                        }
-                        break;
-                    case 5:
-                        Console.Clear();
-                        Console.WriteLine("5 - Snaga vozila");               
+                        Console.Clear();          
                         bool izbornikSnageVozila = true;
                         while (izbornikSnageVozila)
                         {
-                            Console.WriteLine("--- Pretraga po modelu vozila ---");
-                            Console.WriteLine("Upišite od koje do koje snage vozila želite, snaga izražena u KW.");
-                            Console.WriteLine("Povrat? Upiši Ne za nastavak.");
+                            Console.WriteLine("--- Pretraga po snazi vozila ---");
+                            Console.WriteLine("Povrat? Da -> povrat");
                             string povratakODG = Console.ReadLine();
-                            if (povratakODG != "Ne" || povratakODG != "ne" || povratakODG != "NE" || povratakODG != "nE")
+                            if (povratakODG.ToLower() == "da")
                             {
                                 Console.Clear();
                                 izbornikSnageVozila = false;
                             }
                             else {
+                                Console.WriteLine("Upišite od koje do koje snage vozila želite, snaga izražena u KW.");
                                 int odSnage = -1;
                                 while (odSnage == -1)
                                 {
@@ -610,6 +441,11 @@ namespace VUV_RENT
                                     if (!int.TryParse(input, out odSnage))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj i jednak ili veci od 0. Pokušaj ponovno.");
+                                        odSnage = -1;
+                                    }
+                                    if (odSnage < 0)
+                                    {
+                                        Console.WriteLine("Unos mora biti pozitivan. Pokušaj ponovno.");
                                         odSnage = -1;
                                     }
                                 }
@@ -622,6 +458,11 @@ namespace VUV_RENT
                                     if (!int.TryParse(input, out doSnage))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj i jednak ili veci od 0. Pokušaj ponovno.");
+                                        doSnage = -1;
+                                    }
+                                    if (doSnage < 0)
+                                    {
+                                        Console.WriteLine("Unos mora biti pozitivan. Pokušaj ponovno.");
                                         doSnage = -1;
                                     }
                                 }
@@ -642,7 +483,7 @@ namespace VUV_RENT
                                 ConsoleTableBuilder
                                     .From(tableData7)
                                     .WithTitle("Dostupna Vozila")
-                                    .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
+                                    .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cijena")
                                     .ExportAndWriteLine();
                                 Console.WriteLine("Pritisnite enter za povratak");
                                 Console.ReadLine();
@@ -654,23 +495,23 @@ namespace VUV_RENT
 
                             
                         break;
-                    case 6:
+                    case 4:
                         Console.Clear();
                         Console.WriteLine("6 - Kilometrazi");
                         bool izbornikKilometrazeVozila = true;
                         while (izbornikKilometrazeVozila)
                         {
-                            Console.WriteLine("--- Pretraga po modelu vozila ---");
-                            Console.WriteLine("Upišite od koje do koje kilometraza vozila želite");
-                            Console.WriteLine("Povrat? Upiši Ne za nastavak.");
+                            Console.WriteLine("--- Filtriranje po kilometraži vozila ---");
+                            Console.WriteLine("Povrat? Da -> povrat");
                             string povratakODG = Console.ReadLine();
-                            if (povratakODG != "Ne" || povratakODG != "ne" || povratakODG != "NE" || povratakODG != "nE")
+                            if (povratakODG.ToLower() == "da")
                             {
                                 Console.Clear();
                                 izbornikKilometrazeVozila = false;
                             }
                             else
                             {
+                                Console.WriteLine("Upišite od koje do koje kilometraža vozila želite");
                                 int odKM = -1;
                                 while (odKM == -1)
                                 {
@@ -679,6 +520,11 @@ namespace VUV_RENT
                                     if (!int.TryParse(input, out odKM))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj i jednak ili veci od 0. Pokušaj ponovno.");
+                                        odKM = -1;
+                                    }
+                                    if (odKM < 0)
+                                    {
+                                        Console.WriteLine("Unos mora biti pozitivan. Pokušaj ponovno.");
                                         odKM = -1;
                                     }
                                 }
@@ -691,6 +537,11 @@ namespace VUV_RENT
                                     if (!int.TryParse(input, out doKM))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj i jednak ili veci od 0. Pokušaj ponovno.");
+                                        doKM = -1;
+                                    }
+                                    if (doKM < 0)
+                                    {
+                                        Console.WriteLine("Unos mora biti pozitivan. Pokušaj ponovno.");
                                         doKM = -1;
                                     }
                                 }
@@ -713,7 +564,7 @@ namespace VUV_RENT
                                     ConsoleTableBuilder
                                         .From(tableData8)
                                         .WithTitle("Dostupna Vozila")
-                                        .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
+                                        .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cijena")
                                         .ExportAndWriteLine();
                                     Console.WriteLine("Pritisnite enter za povratak");
                                     Console.ReadLine();
@@ -731,23 +582,22 @@ namespace VUV_RENT
                           
                         break;
                         
-                    case 7:
+                    case 5:
                         Console.Clear();
-                        Console.WriteLine("7 - Godini proizvodnje");
                         bool izbornikGodinaVozila = true;
                         while (izbornikGodinaVozila)
                         {
-                            Console.WriteLine("--- Pretraga po modelu vozila ---");
-                            Console.WriteLine("Upišite od koje do koje godine proizvodnje vozila želite");
-                            Console.WriteLine("Povrat? Upiši Ne za nastavak.");
+                            Console.WriteLine("--- Filtriranje po godini proizvodnje ---");
+                            Console.WriteLine("Povrat? Da -> povrat");
                             string povratakODG = Console.ReadLine();
-                            if (povratakODG != "Ne" || povratakODG != "ne" || povratakODG != "NE" || povratakODG != "nE")
+                            if (povratakODG.ToLower() == "da")
                             {
                                 Console.Clear();
                                 izbornikGodinaVozila = false;
                                 break;
                             }
                             else {
+                                Console.WriteLine("Upišite od koje do koje godine proizvodnje vozila želite");
                                 int odGodine = -1;
                                 while (odGodine == -1)
                                 {
@@ -758,15 +608,25 @@ namespace VUV_RENT
                                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
                                         odGodine = -1;
                                     }
+                                    if (odGodine<0)
+                                    {
+                                        Console.WriteLine("Unos mora biti pozitivan. Pokušaj ponovno.");
+                                        odGodine = -1;
+                                    }
                                 }
                                 int doGodine = -1;
                                 while (doGodine == -1)
                                 {
-                                    Console.WriteLine("OD: ");
+                                    Console.WriteLine("DO: ");
                                     string input = Console.ReadLine();
                                     if (!int.TryParse(input, out doGodine))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                                        doGodine = -1;
+                                    }
+                                    if (doGodine<0)
+                                    {
+                                        Console.WriteLine("Unos mora biti pozitivan. Pokušaj ponovno.");
                                         doGodine = -1;
                                     }
                                 }
@@ -787,7 +647,7 @@ namespace VUV_RENT
                                 ConsoleTableBuilder
                                     .From(tableData9)
                                     .WithTitle("Dostupna Vozila")
-                                    .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
+                                    .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cijena")
                                     .ExportAndWriteLine();
                                 Console.WriteLine("Pritisnite enter za povratak");
                                 Console.ReadLine();
@@ -796,23 +656,22 @@ namespace VUV_RENT
                             }
                         }
                         break;
-                    case 8:
+                    case 6:
                         Console.Clear();
-                        Console.WriteLine("8 - Cjeni rente");
                         bool izbornikCjeneVozila = true;
                         while (izbornikCjeneVozila)
                         {
-                            Console.WriteLine("--- Pretraga po modelu vozila ---");
-                            Console.WriteLine("Upišite od koje do koje godine proizvodnje vozila želite");
-                            Console.WriteLine("Povrat? Upiši Ne za nastavak.");
+                            Console.WriteLine("--- Filtriranje po cijeni najma ---");
+                            Console.WriteLine("Povrat? Da -> povrat");
                             string povratakODG = Console.ReadLine();
-                            if (povratakODG != "Ne" || povratakODG != "ne" || povratakODG != "NE" || povratakODG != "nE")
+                            if (povratakODG.ToLower() == "da")
                             {
                                 Console.Clear();
                                 izbornikCjeneVozila = false;
                             }
                             else
                             {
+                                Console.WriteLine("Upišite od koje do koje cijene najma želite filtrirati");
                                 int odCijene = -1;
                                 while (odCijene == -1)
                                 {
@@ -851,7 +710,7 @@ namespace VUV_RENT
                                 ConsoleTableBuilder
                                     .From(tableData10)
                                     .WithTitle("Dostupna Vozila")
-                                    .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
+                                    .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cijena")
                                     .ExportAndWriteLine();
                                 Console.WriteLine("Pritisnite enter za povratak");
                                 Console.ReadLine();
@@ -862,7 +721,7 @@ namespace VUV_RENT
                         }
                         break;
                
-                    case 9:
+                    case 7:
                         Console.Clear();
                         izbornikPretAktivan = false;
                         break;
@@ -897,77 +756,101 @@ namespace VUV_RENT
             DateTime odDatuma = DateTime.MinValue;
             while (odDatuma == DateTime.MinValue)
             {
-                Console.WriteLine("Unesi pocetni datum rente (d-m-g):");
+                Console.WriteLine("OD ovog datuma počine renta (d-m-g):");
                 if (!DateTime.TryParse(Console.ReadLine(), out odDatuma))
                 {
                     Console.WriteLine("Neispravan format datuma. Pokušaj ponovno.");
                     odDatuma = DateTime.MinValue;
                 }
+                if (odDatuma < DateTime.Now)
+                {
+                    Console.WriteLine("Nije moguće rentati vozilo u prošlosti");
+                    odDatuma = DateTime.MinValue;
+                }
+
             }
 
 
             DateTime doDatuma = DateTime.MinValue;
             while (doDatuma == DateTime.MinValue)
             {
-                Console.WriteLine("Unesi zavrsni datum rente (d-m-g):");
+                Console.WriteLine("Ovim datumom ističe vaša renta (d-m-g):");
                 if (!DateTime.TryParse(Console.ReadLine(), out doDatuma))
                 {
                     Console.WriteLine("Neispravan format datuma. Pokušaj ponovno.");
                     doDatuma = DateTime.MinValue;
                 }
+                if (doDatuma < DateTime.Now)
+                {
+                    Console.WriteLine("Nije moguće rentati vozilo u prošlosti");
+                    doDatuma = DateTime.MinValue;
+                }
+                if(doDatuma < odDatuma)
+                {
+                    Console.WriteLine("Datum “DO” ne može biti raniji od datuma “OD”. Molimo odaberite ispravan raspon datuma.");
+                    doDatuma = DateTime.MinValue;
+                }
             }
 
-            Console.WriteLine("\nSlobodna vozila u odabranom periodu:\n");
+
             var tableData11 = new List<List<object>>();
+            var slobodniIdVozila = new List<int>();
+
             foreach (Vozila v in lVozila)
             {
+                if (!v.dostupnost)
+                    continue;
+
                 bool zauzeto = false;
 
                 foreach (Najam renta in lRenta)
                 {
-                    if (renta.idVozila == v.id && v.dostupnost != false)
+                    if (renta.idVozila == v.id)
                     {
                         DateTime rentaOd = renta.odDatuma;
                         DateTime rentaDo = renta.doDatuma;
 
-                        if (rentaOd <= doDatuma && rentaDo >= odDatuma && renta.povrat)
+                        if (rentaOd <= doDatuma && rentaDo >= odDatuma)
                         {
                             zauzeto = true;
                             break;
                         }
-
-
                     }
                 }
-
-                if (!zauzeto && v.dostupnost != false)
+                if (!zauzeto)
                 {
+                    tableData11.Add(new List<object>{v.id,v.tipVozila,v.marka,v.model,v.motor,v.snaga,lKategorija.First(k => k.id == v.kategorija).kategorija,v.KM,v.registracija,v.cjena});
 
-                    if (v.dostupnost)
-                    {
-                        tableData11.Add(new List<object>()
-                        {v.id, v.tipVozila, v.marka, v.model, v.motor, v.snaga, lKategorija.First(k => k.id == v.kategorija).kategorija, v.KM, v.registracija, v.cjena});
-                    }
+                    slobodniIdVozila.Add(v.id);
                 }
             }
             ConsoleTableBuilder
                 .From(tableData11)
-                .WithTitle("Dostupna Vozila")
-                .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
+                .WithTitle("Dostupna vozila unutar odabranog perioda")
+                .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cijena")
                 .ExportAndWriteLine();
 
+            int rentVoziloID;
 
-            int rentVoziloID = -1;
-            while (rentVoziloID == -1)
+            while (true)
             {
-                Console.WriteLine("Unesi ID vozila koje telite iznajmit: ");
-                string unosOdabira = Console.ReadLine();
-                if(!int.TryParse(unosOdabira, out rentVoziloID))
+                Console.Write("Unesi ID vozila koje želite iznajmiti: ");
+                string unos = Console.ReadLine();
+
+                if (!int.TryParse(unos, out rentVoziloID) || rentVoziloID <= 0)
                 {
-                    Console.WriteLine("Unos nije pronadjen ili je pogresan.");
-                    rentVoziloID = -1;
+                    Console.WriteLine("Unos mora biti pozitivan cijeli broj.");
+                    continue;
                 }
+
+                if (!slobodniIdVozila.Contains(rentVoziloID))
+                {
+                    Console.WriteLine("Uneseni ID nije među dostupnim vozilima. Molimo odaberite ID iz tablice.");
+                    continue;
+                }
+                break; 
             }
+
             int ukupnaCjena = 0;
             int brojDana = Math.Abs((odDatuma - doDatuma).Days);
             foreach (Vozila l in lVozila)
@@ -979,7 +862,7 @@ namespace VUV_RENT
             }
 
 
-            zapisUNajam(rentaPutanja, rentVoziloID, trenutniKorisnik, odDatuma, doDatuma, ukupnaCjena);
+            ZapisUNajam(rentaPutanja, rentVoziloID, trenutniKorisnik, odDatuma, doDatuma, ukupnaCjena);
             Console.Clear();
             Console.WriteLine("Rent uspjesan!!!");
             Console.WriteLine("Pritisnite enter za povratak");
@@ -1002,7 +885,7 @@ namespace VUV_RENT
 
 
 
-        static void zapisUNajam(string rentaPutanja, int rentVoziloID, int trenutniKorisnik, DateTime odDatuma, DateTime doDatuma, int ukupnaCjena)
+        static void ZapisUNajam(string rentaPutanja, int rentVoziloID, int trenutniKorisnik, DateTime odDatuma, DateTime doDatuma, int ukupnaCjena)
         {
             string json2 = File.ReadAllText(rentaPutanja);
             List<Najam> lRenta = JsonConvert.DeserializeObject<List<Najam>>(json2);
@@ -1045,7 +928,7 @@ namespace VUV_RENT
 
 
 
-        static void povratVozila(string najamPutanja, string vozilaPutanja, string korisnikPutanja)
+        static void PovratVozila(string najamPutanja, string vozilaPutanja, string korisnikPutanja)
         {
 
             string jsonNajam = File.ReadAllText(najamPutanja);
@@ -1064,7 +947,7 @@ namespace VUV_RENT
 
             foreach (Najam n in lNajmova)
             {
-                if(n.povrat) { 
+                if(!n.povrat) { 
                 var korisnik = lKorisnika.FirstOrDefault(k => k.id == n.idKorisnika);
                 var vozilo = lVozila.FirstOrDefault(v => v.id == n.idVozila);
 
@@ -1129,6 +1012,7 @@ namespace VUV_RENT
             }
 
             Console.WriteLine("Najam s tim ID-em ne postoji.");
+            Console.WriteLine("ENTER za povratak");
             Console.ReadLine();
         }
 
@@ -1149,7 +1033,7 @@ namespace VUV_RENT
 
 
 
-        static Vozila dodavanje(string vozilaPutanja)
+        static Vozila Dodavanje(string vozilaPutanja)
         {
             Vozila novoVozilo = new Vozila();
             string json = "";
@@ -1177,7 +1061,38 @@ namespace VUV_RENT
             while (novoVozilo.tipVozila == "")
             {
                 Console.WriteLine("Unesi tip vozila (Auto, Motor, Bicikl):");
-                novoVozilo.tipVozila = Console.ReadLine();
+                Console.WriteLine("1 - Auto");
+                Console.WriteLine("2 - Motor");
+                Console.WriteLine("3 - Bicikl");
+
+                int tipVozila = -1;
+                while (tipVozila == -1)
+                {
+                    Console.WriteLine("Odabir (Unos mora biti broj):");
+                    string unosOdabira = Console.ReadLine();
+                    if (!int.TryParse(unosOdabira, out tipVozila))
+                    {
+                        Console.WriteLine("Unos mora biti cjeli broj.");
+                        tipVozila = -1;
+                    }
+                    if (tipVozila < -1 || tipVozila>3)
+                    {
+                        Console.WriteLine("Odabrali ste nešto što nije ponuđeno.");
+                        tipVozila = -1;
+                    }                
+                }
+
+                if(tipVozila == 1)
+                {
+                    novoVozilo.tipVozila = "Auto";
+                }else if (tipVozila == 2)
+                {
+                    novoVozilo.tipVozila = "Motor";
+                }else if (tipVozila == 3)
+                {
+                    novoVozilo.tipVozila = "Bicikl";
+                }
+
             }
             while (novoVozilo.marka == "")
             {
@@ -1200,16 +1115,24 @@ namespace VUV_RENT
                 bool izbornikKategorije = true;
                 while (izbornikKategorije) {
                     Console.WriteLine("Odaberi kategoriju vozila:");
-                    Console.WriteLine("1 - Avant");
-                    Console.WriteLine("2 - Limuzina");
-                    Console.WriteLine("3 - Sportback");
-                    Console.WriteLine("4 - Hatchback");
-                    Console.WriteLine("5 - Coupe");
-                    Console.WriteLine("6 - SUV");
-                    Console.WriteLine("7 - Sportak");
-                    Console.WriteLine("8 - Skuter");
-                    Console.WriteLine("9 - Naked");
-                    Console.WriteLine("10 - Bicikl");
+                    if (novoVozilo.tipVozila == "Auto")
+                    {
+                        Console.WriteLine("1 - Avant");
+                        Console.WriteLine("2 - Limuzina");
+                        Console.WriteLine("3 - Sportback");
+                        Console.WriteLine("4 - Hatchback");
+                        Console.WriteLine("5 - Coupe");
+                        Console.WriteLine("6 - SUV");
+                    }
+                    else if(novoVozilo.tipVozila == "Motor")
+                    {
+                        Console.WriteLine("7 - Sportak");
+                        Console.WriteLine("8 - Skuter");
+                        Console.WriteLine("9 - Naked");
+                    }else if(novoVozilo.tipVozila == "Bicikl") {
+                        Console.WriteLine("10 - Bicikl");
+                    }
+
                     Console.WriteLine("Odabir: ");
                     int izbor = -1;
                     while (izbor == -1)
@@ -1272,29 +1195,42 @@ namespace VUV_RENT
 
                 }}
             }
-            while (novoVozilo.snaga == -1)
-            {
-                Console.WriteLine("Unesi snagu vozila (izraženu u kW): ");
-                string input = Console.ReadLine();
-
-                if (!int.TryParse(input, out novoVozilo.snaga))
+            if(novoVozilo.tipVozila == "Auto" || novoVozilo.tipVozila == "Motor") {
+                while (novoVozilo.snaga == -1)
                 {
-                    Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
-                    novoVozilo.snaga = -1;
+                    Console.WriteLine("Unesi snagu vozila (izraženu u kW): ");
+                    string input = Console.ReadLine();
+
+                    if (!int.TryParse(input, out novoVozilo.snaga))
+                    {
+                        Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                        novoVozilo.snaga = -1;
+                    }
+                    if (novoVozilo.snaga < -1)
+                    {
+                        Console.WriteLine("Unos mora biti pozitivan cjeli broj. Pokušaj ponovno.");
+                        novoVozilo.snaga = -1;
+                    }
+                }
+
+                while (novoVozilo.KM == -1)
+                {
+                    Console.WriteLine("Unesi kilometražu vozila: ");
+                    string input = Console.ReadLine();
+
+                    if (!int.TryParse(input, out novoVozilo.KM))
+                    {
+                        Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                        novoVozilo.KM = -1;
+                    }
+                    if (novoVozilo.KM < -1)
+                    {
+                        Console.WriteLine("Unos mora biti pozitivan cjeli broj Pokušaj ponovno.");
+                        novoVozilo.KM = -1;
+                    }
                 }
             }
 
-            while (novoVozilo.KM == -1)
-            {
-                Console.WriteLine("Unesi kilometražu vozila: ");
-                string input = Console.ReadLine();
-
-                if (!int.TryParse(input, out novoVozilo.KM))
-                {
-                    Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
-                    novoVozilo.KM = -1;
-                }
-            }
             while (novoVozilo.godina == -1)
             {
                 Console.WriteLine("Unesi godinu proizvodnje vozila: ");
@@ -1303,6 +1239,12 @@ namespace VUV_RENT
                 if (!int.TryParse(input, out novoVozilo.godina))
                 {
                     Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                    novoVozilo.godina = -1;
+
+                }
+                if (novoVozilo.godina < -1)
+                {
+                    Console.WriteLine("Unos mora biti pozitivan cjeli broj. Pokušaj ponovno.");
                     novoVozilo.godina = -1;
                 }
             }
@@ -1316,8 +1258,13 @@ namespace VUV_RENT
                     Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
                     novoVozilo.cjena = -1;
                 }
+                if (novoVozilo.cjena < -1)
+                {
+                    Console.WriteLine("Unos mora biti pozitivan cjeli broj. Pokušaj ponovno.");
+                    novoVozilo.cjena = -1;
+                }
             }
-            DateTime date = DateTime.Now.AddYears(1).Date;        
+            DateTime date = DateTime.Now.AddYears(1).Date; 
             novoVozilo.registracija = date;
 
             return novoVozilo;
@@ -1335,7 +1282,7 @@ namespace VUV_RENT
 
 
 
-        static void spremiVozilo(List<Vozila> lVozila, string path)
+        static void SpremiVozilo(List<Vozila> lVozila, string path)
         {
             string noviJson = JsonConvert.SerializeObject(lVozila, Formatting.Indented);
             File.WriteAllText(path, noviJson);
@@ -1355,7 +1302,7 @@ namespace VUV_RENT
 
 
 
-        static void azuriranje(string vozilaPutanja, string rentaPutanja)
+        static void Azuriranje(string vozilaPutanja, string rentaPutanja)
         {
             string json = "";
             using (StreamReader sr = new StreamReader(vozilaPutanja))
@@ -1589,7 +1536,7 @@ namespace VUV_RENT
                                 DateTime novaRegistracija = DateTime.MinValue;
                                 while (novaRegistracija == DateTime.MinValue)
                                 {
-                                    Console.WriteLine("Unesi novu registraciju (format: yyyy-MM-ddTHH:mm:ss):");
+                                    Console.WriteLine("Unesi novu registraciju (dd-mm-yyyy):");
                                     if (!DateTime.TryParse(Console.ReadLine(), out novaRegistracija))
                                     {
                                         Console.WriteLine("Neispravan format datuma. Pokušaj ponovno.");
@@ -1646,7 +1593,7 @@ namespace VUV_RENT
                         lVozila[i] = vozilo;
                     }
 
-                    spremiVozilo(lVozila, vozilaPutanja);
+                    SpremiVozilo(lVozila, vozilaPutanja);
                     Console.WriteLine("Vozilo je uspješno ažurirano.");
                     return;
                 }
@@ -1672,7 +1619,7 @@ namespace VUV_RENT
 
 
 
-        static void brisanje(string vozilaPutanja, string kategorijaPutanja)
+        static void Brisanje(string vozilaPutanja, string kategorijaPutanja)
         {
             string json;
             using (StreamReader sr = new StreamReader(vozilaPutanja))
@@ -1702,7 +1649,7 @@ namespace VUV_RENT
             ConsoleTableBuilder
             .From(tableData)
             .WithTitle("Dostupna Vozila")
-            .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena")
+            .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cijena")
             .ExportAndWriteLine();
 
             int idZaBrisanje;
@@ -1725,7 +1672,7 @@ namespace VUV_RENT
                     vozilo.dostupnost = false;
                     lVozila[i] = vozilo;
 
-                    spremiVozilo(lVozila, vozilaPutanja);
+                    SpremiVozilo(lVozila, vozilaPutanja);
                     Console.WriteLine("Vozilo je uspješno obrisano.");
                     pronadeno = true;
                     break;
@@ -1742,7 +1689,7 @@ namespace VUV_RENT
 
 
 
-        static void statistika(string vozilaPutanja,string kategorijePutanja ,string korisnikPutanja,string rentaPutanja)
+        static void Statistika(string vozilaPutanja,string kategorijePutanja ,string korisnikPutanja,string rentaPutanja)
         {
             string jsonVozila = File.ReadAllText(vozilaPutanja);
             List<Vozila> lVozila = JsonConvert.DeserializeObject<List<Vozila>>(jsonVozila);
@@ -1879,7 +1826,7 @@ namespace VUV_RENT
                             }
 
                         }
-                        Console.WriteLine("Unesi unos za pretragu");
+                        Console.WriteLine("Unesi unos za pretragu (Moguca pretrga po: Marci, Modelu, Motoru, Godini proizvodnje): ");
                         string unosPRetraga = Console.ReadLine();
                         unosPRetraga = unosPRetraga.ToLower();
 
@@ -1907,8 +1854,8 @@ namespace VUV_RENT
                                 }
                             }
                         }
-                        ConsoleTableBuilder.From(tableDataSearch).WithTitle("Rezultat").WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cjena").ExportAndWriteLine();
-                        ConsoleTableBuilder.From(tableDataSearchNajmovi).WithTitle("NNajmovi pretrazivanog vozila").WithColumn("ID najma", "Ime korisnika", "Prezime korisnika", "Od datuma", "Do datuma", "Marka vozila", "Model vozila", "Cijena rente").ExportAndWriteLine();
+                        ConsoleTableBuilder.From(tableDataSearch).WithTitle("Rezultat").WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cijena").ExportAndWriteLine();
+                        ConsoleTableBuilder.From(tableDataSearchNajmovi).WithTitle("Najmovi pretrazivanog vozila").WithColumn("ID najma", "Ime korisnika", "Prezime korisnika", "Od datuma", "Do datuma", "Marka vozila", "Model vozila", "Cijena rente").ExportAndWriteLine();
 
                         izbornik = false;
                         break;
@@ -1962,7 +1909,8 @@ namespace VUV_RENT
             Console.SetBufferSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
 
             int idTrenutnogKorisnika =-1;
-            logAfReg:
+        logAfReg:
+            Console.Clear();
             string json = "";
             StreamReader sr = new StreamReader(korisnikPutanja); 
             using (sr)
@@ -2019,7 +1967,7 @@ namespace VUV_RENT
                         break;
                     case 2:
                     int c = lkorisnik.Count;
-                    lkorisnik.Add(register(c, korisnikPutanja));
+                    lkorisnik.Add(Register(c, korisnikPutanja));
 
                     SpremiKorisnike(lkorisnik , korisnikPutanja);
                     goto logAfReg;
@@ -2060,13 +2008,13 @@ namespace VUV_RENT
                     case "1":
                         Console.Clear();
                         Console.WriteLine("1 - Pregled ponude vozila");
-                        ponudaVozila(vozilaPutanja, kategorijePutanja);
+                        PonudaVozila(vozilaPutanja, kategorijePutanja);
                         break;
 
                     case "2":
                         Console.Clear();
                         Console.WriteLine("2 - Pretrazivanje vozila");
-                        pretrazivanjeVozila(vozilaPutanja, kategorijePutanja);
+                        PretrazivanjeVozila(vozilaPutanja, kategorijePutanja);
                         break;
 
                     case "3":
@@ -2085,7 +2033,7 @@ namespace VUV_RENT
                     case "5" when trenutniKorisnik.Admin:
                         Console.Clear();
                         Console.WriteLine("5 - Povrat vozila");
-                        povratVozila(rentaPutanja, vozilaPutanja, korisnikPutanja);
+                        PovratVozila(rentaPutanja, vozilaPutanja, korisnikPutanja);
                         break;
 
                     case "6" when trenutniKorisnik.Admin:
@@ -2093,8 +2041,8 @@ namespace VUV_RENT
                         Console.WriteLine("6 - Dodavanje/azuriranje/brisanje vozila");
                         Console.WriteLine("Odaberi što zeliš napraviti: ");
                         Console.WriteLine("1 - Dodavanje");
-                        Console.WriteLine("2 - azuriranje");
-                        Console.WriteLine("3 - brisanje");
+                        Console.WriteLine("2 - Azuriranje");
+                        Console.WriteLine("3 - Brisanje");
 
                         Console.Write("\nOdabir: ");
                         string izbor2 =Console.ReadLine();
@@ -2111,19 +2059,19 @@ namespace VUV_RENT
                                 List<Vozila> lVozila = new List<Vozila>();
                                 lVozila = JsonConvert.DeserializeObject<List<Vozila>>(json);
                                 Console.Clear();
-                                lVozila.Add(dodavanje(vozilaPutanja));
-                                spremiVozilo(lVozila, vozilaPutanja);
+                                lVozila.Add(Dodavanje(vozilaPutanja));
+                                SpremiVozilo(lVozila, vozilaPutanja);
 
                                 break;
                             case "2":
 
                                 Console.Clear();
-                                azuriranje(vozilaPutanja, kategorijePutanja);
+                                Azuriranje(vozilaPutanja, kategorijePutanja);
                                 break;
                             case "3":
 
                                 Console.Clear();
-                                brisanje(vozilaPutanja, kategorijePutanja);
+                                Brisanje(vozilaPutanja, kategorijePutanja);
                                 break;
                             default:
                                 Console.WriteLine("Neispravan odabir ili nemate ovlasti.");
@@ -2133,7 +2081,7 @@ namespace VUV_RENT
                     case "7" when trenutniKorisnik.Admin:
                         Console.Clear();
                         Console.WriteLine("7 - Statistika");
-                        statistika(vozilaPutanja, kategorijePutanja , korisnikPutanja, rentaPutanja);
+                        Statistika(vozilaPutanja, kategorijePutanja , korisnikPutanja, rentaPutanja);
                         
                         break;
                     default:
