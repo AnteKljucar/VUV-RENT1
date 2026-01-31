@@ -45,7 +45,7 @@
     "id": 3,
     "tipVozila": "Auto",
     "marka": "BMW",
-    "model": "A4",
+    "model": "F30",
     "motor": "B58 2.0",
     "kategorija": 0,
     "snaga": 99,
@@ -53,6 +53,20 @@
     "godina": 2017,
     "registracija": "2026-03-19T00:00:00",
     "cjena": 30,
+    "dostupnost": true
+  },
+  {
+    "id": 4,
+    "tipVozila": "Auto",
+    "marka": "Audi",
+    "model": "A6",
+    "motor": "3.0 TDI",
+    "kategorija": 2,
+    "snaga": 100,
+    "KM": 10000,
+    "godina": 2016,
+    "registracija": "2027-01-31T00:00:00+01:00",
+    "cjena": 35,
     "dostupnost": true
   }
 ]
