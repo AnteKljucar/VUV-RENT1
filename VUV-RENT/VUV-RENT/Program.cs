@@ -2573,13 +2573,13 @@ namespace VUV_RENT
                                         ConsoleTableBuilder
                                             .From(tableData10)
                                             .WithTitle("Dostupna Vozila")
-                                            .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija", "Cijena")
+                                            .WithColumn("ID", "Tip vozila", "Marka", "Model", "Motor", "Snaga", "Kategorija", "KM", "Registracija","Godina proizvodnje", "Cijena")
                                             .ExportAndWriteLine();
 
                                         ConsoleTableBuilder
                                             .From(tableDataSearchNajmovi5)
                                             .WithTitle("Najmovi pretrazivanog vozila")
-                                            .WithColumn("ID najma", "Ime korisnika", "Prezime korisnika", "Od datuma", "Do datuma", "Marka vozila", "Model vozila", "Cijena rente")
+                                            .WithColumn("ID najma", "Ime korisnika", "Prezime korisnika", "Od datuma", "Do datuma", "Marka", "Model", "Cijena rente")
                                             .ExportAndWriteLine();
 
                                         Console.WriteLine("Pritisnite enter za povratak");
