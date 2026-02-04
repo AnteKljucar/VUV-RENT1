@@ -6,7 +6,7 @@
     "odDatuma": "2026-04-03T00:00:00",
     "doDatuma": "2026-04-04T00:00:00",
     "ukupniIznosTroskovaRente": 30,
-    "povrat": false
+    "povrat": true
   },
   {
     "id": 1,
@@ -14,7 +14,70 @@
     "idVozila": 3,
     "odDatuma": "2026-04-03T00:00:00",
     "doDatuma": "2026-04-04T00:00:00",
-    "ukupniIznosTroskovaRente": 30,
+    "ukupniIznosTroskovaRente": 0,
+    "povrat": true
+  },
+  {
+    "id": 2,
+    "idKorisnika": 0,
+    "idVozila": 7,
+    "odDatuma": "2026-02-04T22:00:00",
+    "doDatuma": "2026-02-05T00:00:00",
+    "ukupniIznosTroskovaRente": 0,
+    "povrat": true
+  },
+  {
+    "id": 3,
+    "idKorisnika": 0,
+    "idVozila": 7,
+    "odDatuma": "2026-02-02T21:00:00",
+    "doDatuma": "2026-02-04T21:27:42.1446582+01:00",
+    "ukupniIznosTroskovaRente": 50,
+    "povrat": true
+  },
+  {
+    "id": 4,
+    "idKorisnika": 0,
+    "idVozila": 5,
+    "odDatuma": "2026-02-04T22:00:00",
+    "doDatuma": "2026-02-05T00:00:00",
+    "ukupniIznosTroskovaRente": 0,
+    "povrat": true
+  },
+  {
+    "id": 5,
+    "idKorisnika": 0,
+    "idVozila": 4,
+    "odDatuma": "2026-02-04T22:00:00",
+    "doDatuma": "2026-02-05T00:00:00",
+    "ukupniIznosTroskovaRente": 0,
+    "povrat": true
+  },
+  {
+    "id": 6,
+    "idKorisnika": 0,
+    "idVozila": 0,
+    "odDatuma": "2026-02-04T22:00:00",
+    "doDatuma": "2026-02-05T00:00:00",
+    "ukupniIznosTroskovaRente": 0,
+    "povrat": true
+  },
+  {
+    "id": 7,
+    "idKorisnika": 0,
+    "idVozila": 0,
+    "odDatuma": "2026-03-05T21:00:00",
+    "doDatuma": "2026-03-06T00:00:00",
+    "ukupniIznosTroskovaRente": 0,
+    "povrat": true
+  },
+  {
+    "id": 8,
+    "idKorisnika": 0,
+    "idVozila": 0,
+    "odDatuma": "2026-03-05T21:00:00",
+    "doDatuma": "2026-03-06T00:00:00",
+    "ukupniIznosTroskovaRente": 0,
     "povrat": false
   }
 ]

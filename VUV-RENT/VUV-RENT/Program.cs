@@ -130,7 +130,6 @@ namespace VUV_RENT
             Korisnik noviUnos = new Korisnik();
             string jsonKorisnik = File.ReadAllText(korisnikPutanja);
             List<Korisnik> lKorisnika = JsonConvert.DeserializeObject<List<Korisnik>>(jsonKorisnik);
-
             noviUnos.id = lKorisnika[lKorisnika.Count - 1].id+1;
             noviUnos.ime = "";
             noviUnos.korisnickoIme = "";
@@ -157,6 +156,7 @@ namespace VUV_RENT
                 if (password != confPassword)
                 {
                     Console.WriteLine("Ponovo unesite lozinku, potvrda lozinke nije uspjela.");
+                    log(noviUnos.id, "Ponovo unesite lozinku, potvrda lozinke nije uspjela.");
                     noviUnos.password = "";
                 }
                 else
@@ -180,6 +180,7 @@ namespace VUV_RENT
                 if (noviUnos.OIB.Length != 11)
                 {
                     Console.WriteLine("OIB mora sadržavati točno 11 znamenki.");
+                    log(noviUnos.id, "OIB mora sadržavati točno 11 znamenki");
                     noviUnos.OIB = "";
                     continue;
                 }
@@ -188,6 +189,7 @@ namespace VUV_RENT
                 if (!long.TryParse(noviUnos.OIB, out oibBroj))
                 {
                     Console.WriteLine("OIB smije sadržavati samo brojeve.");
+                    log(noviUnos.id, "OIB smije sadržavati samo brojeve.");
                     noviUnos.OIB = "";
                     continue;
                 }
@@ -205,12 +207,13 @@ namespace VUV_RENT
                 if (postoji)
                 {
                     Console.WriteLine("Korisnik s tim OIB-om već postoji.");
+                    log(noviUnos.id, "Korisnik s tim OIB-om već postoji.");
                     noviUnos.OIB = "";
                 }
             }
 
             noviUnos.Admin = false;
-
+            log(noviUnos.id, "Uspješno registriran");
             return noviUnos;
         }
 
@@ -388,7 +391,8 @@ namespace VUV_RENT
 
 
 
-        static void PretrazivanjeVozila(string putanjaVozila, string putanjaKategorija) {
+        static void PretrazivanjeVozila(int idTrenutnogKorisnika, string putanjaVozila, string putanjaKategorija) {
+            log(idTrenutnogKorisnika, "Ulazi u pretragu vozila.");
 
             string jsonVozila = File.ReadAllText(putanjaVozila);
             List<Vozila> lVozila = JsonConvert.DeserializeObject<List<Vozila>>(jsonVozila);
@@ -422,6 +426,7 @@ namespace VUV_RENT
                     if (!int.TryParse(input, out izbor))
                     {
                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                         izbor = -1;
                     }
                 }
@@ -502,10 +507,12 @@ namespace VUV_RENT
                                     if (!int.TryParse(input, out odSnage))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj i jednak ili veci od 0. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj i jednak ili veci od 0. Pokušaj ponovno.");
                                         odSnage = -1;
                                     }
                                     if (odSnage < 0)
                                     {
+                                        log(idTrenutnogKorisnika, "Unos mora biti pozitivan. Pokušaj ponovno.");
                                         Console.WriteLine("Unos mora biti pozitivan. Pokušaj ponovno.");
                                         odSnage = -1;
                                     }
@@ -519,16 +526,19 @@ namespace VUV_RENT
                                     if (!int.TryParse(input, out doSnage))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj i jednak ili veci od 0. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj i jednak ili veci od 0. Pokušaj ponovno.");
                                         doSnage = -1;
                                     }
                                     if (doSnage < 0)
                                     {
                                         Console.WriteLine("Unos mora biti pozitivan. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti pozitivan. Pokušaj ponovno.");
                                         doSnage = -1;
                                     }
                                     if (doSnage < odSnage)
                                     {
                                         Console.WriteLine("Unos DO mora biti veći od unosa OD.");
+                                        log(idTrenutnogKorisnika, "Unos DO mora biti veći od unosa OD.");
                                         doSnage = -1;
                                     }
                                 }
@@ -595,11 +605,13 @@ namespace VUV_RENT
                                     if (!int.TryParse(input, out odKM))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj i jednak ili veci od 0. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj i jednak ili veci od 0. Pokušaj ponovno.");
                                         odKM = -1;
                                     }
-                                    if (odKM < 0)
+                                    else if (odKM < 0)
                                     {
                                         Console.WriteLine("Unos mora biti pozitivan. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti pozitivan. Pokušaj ponovno");
                                         odKM = -1;
                                     }
                                 }
@@ -612,16 +624,19 @@ namespace VUV_RENT
                                     if (!int.TryParse(input, out doKM))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj i jednak ili veci od 0. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj i jednak ili veci od 0. Pokušaj ponovno.");
                                         doKM = -1;
                                     }
-                                    if (doKM < 0)
+                                    else if (doKM < 0)
                                     {
                                         Console.WriteLine("Unos mora biti pozitivan. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti pozitivan. Pokušaj ponovno.");
                                         doKM = -1;
                                     }
-                                    if (doKM < odKM)
+                                    else if (doKM < odKM)
                                     {
                                         Console.WriteLine("Unos DO mora biti veći od unosa OD.");
+                                        log(idTrenutnogKorisnika, "Unos DO mora biti veći od unosa OD.");
                                         doKM = -1;
                                     }
                                 }
@@ -687,11 +702,13 @@ namespace VUV_RENT
                                     if (!int.TryParse(input, out odGodine))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                                         odGodine = -1;
                                     }
                                     else if (odGodine < 0)
                                     {
                                         Console.WriteLine("Unos mora biti pozitivan. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti pozitivan. Pokušaj ponovno.");
                                         odGodine = -1;
                                     }
                                 }
@@ -704,16 +721,19 @@ namespace VUV_RENT
                                     if (!int.TryParse(input, out doGodine))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                                         doGodine = -1;
                                     }
                                     else if (doGodine < 0)
                                     {
                                         Console.WriteLine("Unos mora biti pozitivan. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti pozitivan. Pokušaj ponovno.");
                                         doGodine = -1;
                                     }
                                     else if (doGodine < odGodine)
                                     {
                                         Console.WriteLine("Unos DO mora biti veći od unosa OD.");
+                                        log(idTrenutnogKorisnika, "Unos DO mora biti veći od unosa OD.");
                                         doGodine = -1;
                                     }
                                 }
@@ -777,6 +797,7 @@ namespace VUV_RENT
                                     if (!int.TryParse(input, out odCijene))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                                         odCijene = -1;
                                     }
                                 }
@@ -789,11 +810,13 @@ namespace VUV_RENT
                                     if (!int.TryParse(input, out doCijene))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                                         doCijene = -1;
                                     }
                                     else if (doCijene < odCijene)
                                     {
                                         Console.WriteLine("Unos DO mora biti veći od unosa OD.");
+                                        log(idTrenutnogKorisnika, "Unos DO mora biti veći od unosa OD.");
                                         doCijene = -1;
                                     }
                                 }
@@ -842,6 +865,7 @@ namespace VUV_RENT
 
                     default:
                         Console.WriteLine("Neispravan odabir ili nemate ovlasti.");
+                        log(idTrenutnogKorisnika, "Neispravan odabir ili nemate ovlasti.");
                         break;
                 }
             }
@@ -854,8 +878,9 @@ namespace VUV_RENT
 
 
 
-        static void RentajVozilo(string vozilaPutanja, string rentaPutanja, int trenutniKorisnik, string korisnikPutanja, string putanjaKategorija)
+        static void RentajVozilo(int idTrenutnogKorisnika, string vozilaPutanja, string rentaPutanja, int trenutniKorisnik, string korisnikPutanja, string putanjaKategorija)
         {
+            log(idTrenutnogKorisnika, "Korisnik ulazi u formu za rentu");
             string json = File.ReadAllText(vozilaPutanja);
             List<Vozila> lVozila = JsonConvert.DeserializeObject<List<Vozila>>(json);
 
@@ -873,11 +898,13 @@ namespace VUV_RENT
                 if (!DateTime.TryParse(Console.ReadLine(), out odDatuma))
                 {
                     Console.WriteLine("Neispravan format datuma. Pokušaj ponovno.");
+                    log(idTrenutnogKorisnika, "Neispravan format datuma. Pokušaj ponovno.");
                     odDatuma = DateTime.MinValue;
                 }
-                if (odDatuma < DateTime.Now)
+                else if (odDatuma < DateTime.Now)
                 {
-                    Console.WriteLine("Nije moguće rentati vozilo u prošlosti");
+                    Console.WriteLine("Nije moguće rentati vozilo u prošlosti.");
+                    log(idTrenutnogKorisnika, "Nije moguće rentati vozilo u prošlosti.");
                     odDatuma = DateTime.MinValue;
                 }
 
@@ -891,16 +918,19 @@ namespace VUV_RENT
                 if (!DateTime.TryParse(Console.ReadLine(), out doDatuma))
                 {
                     Console.WriteLine("Neispravan format datuma. Pokušaj ponovno.");
+                    log(idTrenutnogKorisnika, "Neispravan format datuma. Pokušaj ponovno.");
                     doDatuma = DateTime.MinValue;
                 }
-                if (doDatuma < DateTime.Now)
+                else if (doDatuma < DateTime.Now)
                 {
-                    Console.WriteLine("Nije moguće rentati vozilo u prošlosti");
+                    Console.WriteLine("Nije moguće rentati vozilo u prošlosti.");
+                    log(idTrenutnogKorisnika, "Nije moguće rentati vozilo u prošlosti.");
                     doDatuma = DateTime.MinValue;
                 }
-                if(doDatuma < odDatuma)
+                else if(doDatuma < odDatuma)
                 {
                     Console.WriteLine("Datum “DO” ne može biti raniji od datuma “OD”. Molimo odaberite ispravan raspon datuma.");
+                    log(idTrenutnogKorisnika, "Datum “DO” ne može biti raniji od datuma “OD”. Molimo odaberite ispravan raspon datuma.");
                     doDatuma = DateTime.MinValue;
                 }
             }
@@ -923,7 +953,7 @@ namespace VUV_RENT
                         DateTime rentaOd = renta.odDatuma;
                         DateTime rentaDo = renta.doDatuma;
 
-                        if (rentaOd <= doDatuma && rentaDo >= odDatuma)
+                        if (rentaOd <= doDatuma && rentaDo >= odDatuma && renta.povrat == false)
                         {
                             zauzeto = true;
                             break;
@@ -975,12 +1005,14 @@ namespace VUV_RENT
                 if (!int.TryParse(unos, out rentVoziloID) || rentVoziloID < 0)
                 {
                     Console.WriteLine("Unos mora biti pozitivan cijeli broj.");
+                    log(idTrenutnogKorisnika, "Unos mora biti pozitivan cijeli broj.");
                     continue;
                 }
 
-                if (!slobodniIdVozila.Contains(rentVoziloID))
+                else if (!slobodniIdVozila.Contains(rentVoziloID))
                 {
                     Console.WriteLine("Uneseni ID nije među dostupnim vozilima. Molimo odaberite ID iz tablice.");
+                    log(idTrenutnogKorisnika, "Uneseni ID nije među dostupnim vozilima. Molimo odaberite ID iz tablice.");
                     continue;
                 }
                 break; 
@@ -1000,6 +1032,7 @@ namespace VUV_RENT
             ZapisUNajam(rentaPutanja, rentVoziloID, trenutniKorisnik, odDatuma, doDatuma, ukupnaCjena);
             Console.Clear();
             Console.WriteLine("Rent uspjesan!!!");
+            log(idTrenutnogKorisnika, "Rent uspjesan!!!");
             Console.WriteLine("Pritisnite enter za povratak");
             Console.ReadLine();
 
@@ -1063,7 +1096,7 @@ namespace VUV_RENT
 
 
 
-        static void PovratVozila(string najamPutanja, string vozilaPutanja, string korisnikPutanja)
+        static void PovratVozila(int idTrenutnogKorisnika, string najamPutanja, string vozilaPutanja, string korisnikPutanja)
         {
 
             string jsonNajam = File.ReadAllText(najamPutanja);
@@ -1130,6 +1163,7 @@ namespace VUV_RENT
                 if (!int.TryParse(unosOdabira, out trazeniId))
                 {
                     Console.WriteLine("Unos nije pronadjen ili je pogresan.");
+                    log(idTrenutnogKorisnika, "Unos nije pronadjen ili je pogresan.");
                     trazeniId = -1;
                 }
             }
@@ -1144,10 +1178,27 @@ namespace VUV_RENT
                     if (tempNajam.povrat)
                     {
                         Console.WriteLine("Vozilo je već vraćeno.");
+                        log(idTrenutnogKorisnika, "Vozilo je već vraćeno.");
                         Console.ReadLine();
                         return;
                     }
+                    if(tempNajam.doDatuma< DateTime.Now)
+                    {
+                        tempNajam.doDatuma = DateTime.Now;
+                        for (int j = 0; j < lVozila.Count; j++)
+                        {
+                            if (lVozila[j].id == tempNajam.idVozila)
+                            {
+                                var tempVozilo = lVozila[j];
+                                int brojDana = Math.Abs((tempNajam.doDatuma-tempNajam.odDatuma).Days);
+                                tempNajam.ukupniIznosTroskovaRente = brojDana * tempVozilo.cijena;
+                                break;
+                            }
+                        }        
+                    }else if(tempNajam.odDatuma> DateTime.Now){
+                        tempNajam.ukupniIznosTroskovaRente = 0;
 
+                    }
                     tempNajam.povrat = true;
                     lNajmova[i] = tempNajam;
 
@@ -1166,12 +1217,14 @@ namespace VUV_RENT
                     File.WriteAllText(vozilaPutanja, JsonConvert.SerializeObject(lVozila, Formatting.Indented));
 
                     Console.WriteLine("Povrat uspješan.");
+                    log(idTrenutnogKorisnika, "Povrat uspješan.");
                     Console.ReadLine();
                     return;
                 }
             }
 
             Console.WriteLine("Najam s tim ID-em ne postoji.");
+            log(idTrenutnogKorisnika, "Najam s tim ID-em ne postoji.");
             Console.WriteLine("ENTER za povratak");
             Console.ReadLine();
         }
@@ -1193,7 +1246,7 @@ namespace VUV_RENT
 
 
 
-        static Vozila Dodavanje(string vozilaPutanja)
+        static Vozila Dodavanje(int idTrenutnogKorisnika, string vozilaPutanja)
         {
             Vozila novoVozilo = new Vozila();
             string json = "";
@@ -1233,11 +1286,13 @@ namespace VUV_RENT
                     if (!int.TryParse(unosOdabira, out tipVozila))
                     {
                         Console.WriteLine("Unos mora biti cjeli broj.");
+                        log(idTrenutnogKorisnika, "Unos mora biti cjeli broj.");
                         tipVozila = -1;
                     }
-                    if (tipVozila < -1 || tipVozila>3)
+                    else if (tipVozila < -1 || tipVozila>3)
                     {
                         Console.WriteLine("Odabrali ste nešto što nije ponuđeno.");
+;                        log(idTrenutnogKorisnika, "Odabrali ste nešto što nije ponuđeno.");
                         tipVozila = -1;
                     }                
                 }
@@ -1306,6 +1361,7 @@ namespace VUV_RENT
                         if (!int.TryParse(input, out izbor))
                         {
                             Console.WriteLine("Unesi nešto od ponudjenog ili unos nije bio cjeli broj.");
+                            log(idTrenutnogKorisnika, "Unesi nešto od ponudjenog ili unos nije bio cjeli broj.");
                             izbor = -1;
                         }
                     }
@@ -1356,6 +1412,7 @@ namespace VUV_RENT
                         break;
                     default:
                             Console.Write("Odabrano nešto što nije ponudjeno.");
+                            log(idTrenutnogKorisnika, "Odabrano nešto što nije ponudjeno.");
                         break;
 
                 }}
@@ -1371,7 +1428,7 @@ namespace VUV_RENT
                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
                         novoVozilo.snaga = -1;
                     }
-                    if (novoVozilo.snaga < -1)
+                    else if (novoVozilo.snaga < -1)
                     {
                         Console.WriteLine("Unos mora biti pozitivan cjeli broj. Pokušaj ponovno.");
                         novoVozilo.snaga = -1;
@@ -1386,11 +1443,13 @@ namespace VUV_RENT
                     if (!int.TryParse(input, out novoVozilo.KM))
                     {
                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                         novoVozilo.KM = -1;
                     }
-                    if (novoVozilo.KM < -1 || novoVozilo.KM == 0)
+                    else if (novoVozilo.KM < -1 || novoVozilo.KM == 0)
                     {
                         Console.WriteLine("Unos mora biti pozitivan cjeli broj Pokušaj ponovno.");
+                        log(idTrenutnogKorisnika, "Unos mora biti pozitivan cjeli broj Pokušaj ponovno.");
                         novoVozilo.KM = -1;
                     }
                 }
@@ -1407,12 +1466,14 @@ namespace VUV_RENT
                 if (!int.TryParse(input, out novoVozilo.godina))
                 {
                     Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                    log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                     novoVozilo.godina = -1;
 
                 }
-                if (novoVozilo.godina < -1)
+                else if (novoVozilo.godina < -1)
                 {
                     Console.WriteLine("Unos mora biti pozitivan cjeli broj. Pokušaj ponovno.");
+                    log(idTrenutnogKorisnika, "Unos mora biti pozitivan cjeli broj. Pokušaj ponovno.");
                     novoVozilo.godina = -1;
                 }
             }
@@ -1424,11 +1485,13 @@ namespace VUV_RENT
                 if (!int.TryParse(input, out novoVozilo.cijena))
                 {
                     Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                    log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                     novoVozilo.cijena = -1;
                 }
-                if (novoVozilo.cijena < -1 || novoVozilo.cijena==0)
+                else if (novoVozilo.cijena < -1 || novoVozilo.cijena==0)
                 {
                     Console.WriteLine("Unos mora biti pozitivan cjeli broj. Pokušaj ponovno.");
+                    log(idTrenutnogKorisnika, "Unos mora biti pozitivan cjeli broj. Pokušaj ponovno.");
                     novoVozilo.cijena = -1;
                 }
             }
@@ -1439,7 +1502,7 @@ namespace VUV_RENT
                 novoVozilo.registracija = date;
             }
 
-
+            log(idTrenutnogKorisnika, "Uspješno dodaje novo vozilo.");
             return novoVozilo;
         }
 
@@ -1475,7 +1538,7 @@ namespace VUV_RENT
 
 
 
-        static void Azuriranje(string vozilaPutanja, string rentaPutanja)
+        static void Azuriranje(int idTrenutnogKorisnika,string vozilaPutanja, string rentaPutanja)
         {
             string json = "";
             using (StreamReader sr = new StreamReader(vozilaPutanja))
@@ -1534,6 +1597,7 @@ namespace VUV_RENT
                 if (!int.TryParse(input, out idZaAzuriranje))
                 {
                     Console.WriteLine("Unos mora biti cijeli broj.");
+                    log(idTrenutnogKorisnika, "Unos mora biti cijeli broj.");
                     idZaAzuriranje = -1;
                     continue;
                 }
@@ -1551,6 +1615,7 @@ namespace VUV_RENT
                 if (!idPostoji)
                 {
                     Console.WriteLine("Uneseni ID ne postoji među dostupnim vozilima. Pokušaj ponovno.");
+                    log(idTrenutnogKorisnika, "Uneseni ID ne postoji među dostupnim vozilima. Pokušaj ponovno.");
                     idZaAzuriranje = -1;
                 }
             }
@@ -1590,6 +1655,7 @@ namespace VUV_RENT
                             if (!int.TryParse(unos, out izbor))
                             {
                                 Console.WriteLine("Unos mora biti broj. Pokušaj ponovno.");
+                                log(idTrenutnogKorisnika, "Unos mora biti broj. Pokušaj ponovno.");
                                 izbor = -1;
                             }
                         }
@@ -1640,6 +1706,7 @@ namespace VUV_RENT
                                     if (!int.TryParse(Console.ReadLine(), out novaSnaga) || novaSnaga <= 0)
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                                         novaSnaga = -1;
                                     }
                                 }
@@ -1655,6 +1722,7 @@ namespace VUV_RENT
                                     if (!int.TryParse(Console.ReadLine(), out noviKM) || noviKM <= 0)
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                                         noviKM = -1;
                                     }
                                 }
@@ -1670,6 +1738,7 @@ namespace VUV_RENT
                                     if (!int.TryParse(Console.ReadLine(), out novaGodina))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                                         novaGodina = -1;
                                     }
                                 }
@@ -1685,6 +1754,7 @@ namespace VUV_RENT
                                     if (!DateTime.TryParse(Console.ReadLine(), out novaRegistracija) || novaRegistracija < DateTime.Now)
                                     {
                                         Console.WriteLine("Neispravan format datuma. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Neispravan format datuma. Pokušaj ponovno.");
                                         novaRegistracija = DateTime.MinValue;
                                     }
                                 }
@@ -1700,6 +1770,7 @@ namespace VUV_RENT
                                     if (!int.TryParse(Console.ReadLine(), out novaCijena) || novaCijena <= 0)
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                                         novaCijena = -1;
                                     }
                                 }
@@ -1718,6 +1789,7 @@ namespace VUV_RENT
                                     if (!int.TryParse(Console.ReadLine(), out novaGodina))
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                                         novaGodina = -1;
                                     }
                                 }
@@ -1732,6 +1804,7 @@ namespace VUV_RENT
                                     if (!int.TryParse(Console.ReadLine(), out novaCijena) || novaCijena <= 0)
                                     {
                                         Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno.");
                                         novaCijena = -1;
                                     }
                                 }
@@ -1744,6 +1817,7 @@ namespace VUV_RENT
                             default:
                                 Console.Clear();
                                 Console.WriteLine("Odabrano nešto što nije ponuđeno. Pokušaj ponovno.");
+                                log(idTrenutnogKorisnika, "Odabrano nešto što nije ponuđeno. Pokušaj ponovno.");
                                 break;
                         }
 
@@ -1752,11 +1826,13 @@ namespace VUV_RENT
 
                     SpremiVozilo(lVozila, vozilaPutanja);
                     Console.WriteLine("Vozilo je uspješno ažurirano.");
+                    log(idTrenutnogKorisnika, "Vozilo je uspješno ažurirano.");
                     return;
                 }
             }
 
             Console.WriteLine("Vozilo s tim ID-em nije pronađeno.");
+            log(idTrenutnogKorisnika, "Vozilo s tim ID-em nije pronađeno.");
             Console.ReadLine();
         }
 
@@ -1776,9 +1852,9 @@ namespace VUV_RENT
 
 
 
-        static void Brisanje(string vozilaPutanja, string kategorijaPutanja, string putanjaNajam)
+        static void Brisanje(int idTrenutnogKorisnika, string vozilaPutanja, string kategorijaPutanja, string putanjaNajam)
         {
-
+            log(idTrenutnogKorisnika, "Korisnik ulazi u meni za brisanje vozila.");
             string jsonVozila = File.ReadAllText(vozilaPutanja);
             List<Vozila> lVozila = JsonConvert.DeserializeObject<List<Vozila>>(jsonVozila);
 
@@ -1838,10 +1914,11 @@ namespace VUV_RENT
             while (true)
             {
                 Console.WriteLine("Unesi ID vozila koje želiš obrisati: ");
-                if (int.TryParse(Console.ReadLine(), out idZaBrisanje))
-                    break;
+                if (int.TryParse(Console.ReadLine(), out idZaBrisanje)) { break; }
+
 
                 Console.WriteLine("Unos mora biti cijeli broj.");
+                log(idTrenutnogKorisnika, "Unos mora biti cijeli broj.");
             }
 
             bool pronadeno = false;
@@ -1856,6 +1933,7 @@ namespace VUV_RENT
 
                     SpremiVozilo(lVozila, vozilaPutanja);
                     Console.WriteLine("Vozilo je uspješno obrisano.");
+                    log(idTrenutnogKorisnika, "Vozilo je uspješno obrisano.");
                     pronadeno = true;
                     break;
                 }
@@ -1864,6 +1942,7 @@ namespace VUV_RENT
             if (!pronadeno)
             {
                 Console.WriteLine("Vozilo s tim ID-em ne postoji ili je već obrisano.");
+                log(idTrenutnogKorisnika, "Vozilo s tim ID-em ne postoji ili je već obrisano.");
             }
 
             Console.ReadLine();
@@ -1871,7 +1950,7 @@ namespace VUV_RENT
 
 
 
-        static void Statistika(string vozilaPutanja,string kategorijePutanja ,string korisnikPutanja,string rentaPutanja)
+        static void Statistika(int idTrenutnogKorisnika, string vozilaPutanja,string kategorijePutanja ,string korisnikPutanja,string rentaPutanja)
         {
             string jsonVozila = File.ReadAllText(vozilaPutanja);
             List<Vozila> lVozila = JsonConvert.DeserializeObject<List<Vozila>>(jsonVozila);
@@ -1896,6 +1975,7 @@ namespace VUV_RENT
                     if (!int.TryParse(input, out odabir))
                     {
                         Console.WriteLine("Unos mora biti cijeli broj.");
+                        log(idTrenutnogKorisnika, "Unos mora biti cijeli broj.");
                         odabir = -1;
                     }
                 }
@@ -2034,6 +2114,7 @@ namespace VUV_RENT
                                 if (!int.TryParse(input, out izbor))
                                 {
                                     Console.WriteLine("Unos mora biti cijeli broj. Pokušaj ponovno.");
+                                    log(idTrenutnogKorisnika, "Unos mora biti cijeli broj. Pokušaj ponovno");
                                     izbor = -1;
                                 }
                             }
@@ -2153,6 +2234,7 @@ namespace VUV_RENT
                                                 if (!int.TryParse(input, out odSnage) || odSnage < 0)
                                                 {
                                                     Console.WriteLine("Unos mora biti cijeli broj i jednak ili veći od 0. Pokušaj ponovno.");
+                                                    log(idTrenutnogKorisnika, "Unos mora biti cijeli broj i jednak ili veći od 0. Pokušaj ponovno.");
                                                     odSnage = -1;
                                                 }
                                             }
@@ -2165,11 +2247,13 @@ namespace VUV_RENT
                                                 if (!int.TryParse(input, out doSnage) || doSnage < 0)
                                                 {
                                                     Console.WriteLine("Unos mora biti cijeli broj i jednak ili veći od 0. Pokušaj ponovno.");
+                                                    log(idTrenutnogKorisnika, "Unos mora biti cijeli broj i jednak ili veći od 0. Pokušaj ponovno.");
                                                     doSnage = -1;
                                                 }
                                                 else if (doSnage < odSnage)
                                                 {
                                                     Console.WriteLine("Unos DO mora biti veći od unosa OD.");
+                                                    log(idTrenutnogKorisnika, "Unos DO mora biti veći od unosa OD.");
                                                     doSnage = -1;
                                                 }
                                             }
@@ -2271,6 +2355,7 @@ namespace VUV_RENT
                                             if (!int.TryParse(input, out odKM) || odKM < 0)
                                             {
                                                 Console.WriteLine("Unos mora biti cijeli broj i jednak ili veći od 0. Pokušaj ponovno.");
+                                                log(idTrenutnogKorisnika, "Unos mora biti cijeli broj i jednak ili veći od 0. Pokušaj ponovno.");
                                                 odKM = -1;
                                             }
                                         }
@@ -2283,11 +2368,13 @@ namespace VUV_RENT
                                             if (!int.TryParse(input, out doKM) || doKM < 0)
                                             {
                                                 Console.WriteLine("Unos mora biti cijeli broj i jednak ili veći od 0. Pokušaj ponovno.");
+                                                log(idTrenutnogKorisnika, "Unos mora biti cijeli broj i jednak ili veći od 0. Pokušaj ponovno.");
                                                 doKM = -1;
                                             }
                                             else if (doKM < odKM)
                                             {
                                                 Console.WriteLine("Unos DO mora biti veći od unosa OD.");
+                                                log(idTrenutnogKorisnika, "Unos DO mora biti veći od unosa OD.");
                                                 doKM = -1;
                                             }
                                         }
@@ -2387,6 +2474,7 @@ namespace VUV_RENT
                                             if (!int.TryParse(input, out odGodine) || odGodine < 0)
                                             {
                                                 Console.WriteLine("Unos mora biti cijeli broj i pozitivan. Pokušaj ponovno.");
+                                                log(idTrenutnogKorisnika, "Unos mora biti cijeli broj i pozitivan. Pokušaj ponovno.");
                                                 odGodine = -1;
                                             }
                                         }
@@ -2399,11 +2487,13 @@ namespace VUV_RENT
                                             if (!int.TryParse(input, out doGodine) || doGodine < 0)
                                             {
                                                 Console.WriteLine("Unos mora biti cijeli broj i pozitivan. Pokušaj ponovno.");
+                                                log(idTrenutnogKorisnika, "Unos mora biti cijeli broj i pozitivan. Pokušaj ponovno.");
                                                 doGodine = -1;
                                             }
                                             else if (doGodine < odGodine)
                                             {
                                                 Console.WriteLine("Unos DO mora biti veći od unosa OD.");
+                                                log(idTrenutnogKorisnika, "Unos DO mora biti veći od unosa OD.");
                                                 doGodine = -1;
                                             }
                                         }
@@ -2502,6 +2592,7 @@ namespace VUV_RENT
                                             if (!int.TryParse(input, out odCijene) || odCijene < 0)
                                             {
                                                 Console.WriteLine("Unos mora biti cijeli broj i jednak ili veći od 0. Pokušaj ponovno.");
+                                                log(idTrenutnogKorisnika, "Unos mora biti cijeli broj i jednak ili veći od 0. Pokušaj ponovno.");
                                                 odCijene = -1;
                                             }
                                         }
@@ -2514,11 +2605,13 @@ namespace VUV_RENT
                                             if (!int.TryParse(input, out doCijene) || doCijene < 0)
                                             {
                                                 Console.WriteLine("Unos mora biti cijeli broj i jednak ili veći od 0. Pokušaj ponovno.");
+                                                log(idTrenutnogKorisnika, "Unos mora biti cijeli broj i jednak ili veći od 0. Pokušaj ponovno.");
                                                 doCijene = -1;
                                             }
                                             else if (doCijene < odCijene)
                                             {
                                                 Console.WriteLine("Unos DO mora biti veći od unosa OD.");
+                                                log(idTrenutnogKorisnika, "Unos DO mora biti veći od unosa OD.");
                                                 doCijene = -1;
                                             }
                                         }
@@ -2608,6 +2701,7 @@ namespace VUV_RENT
                         break;
                     default:
                         Console.WriteLine("Odabir netocan");
+                        log(idTrenutnogKorisnika, "Odabir netocan");
                         izbornik = true;
                         break;
                 }
@@ -2618,7 +2712,13 @@ namespace VUV_RENT
         }
 
 
+        static void log(int idTrenutnogKorisnika, string poruka)
+        {
+            string putanja = "C:\\Users\\AK\\source\\repos\\VUV-RENT\\VUV-RENT\\logBook.txt";
+            string porukaUFile = "ID:" + idTrenutnogKorisnika + " Vrijeme: " + DateTime.Now + " Poruka: " + poruka;
+            File.AppendAllText(putanja, porukaUFile + System.Environment.NewLine);
 
+        }
 
 
 
@@ -2639,10 +2739,10 @@ namespace VUV_RENT
             Console.InputEncoding = Encoding.UTF8;
             Console.OutputEncoding = Encoding.UTF8;
 
-            string kategorijePutanja = "C:\\Users\\Akljucar\\source\\repos\\VUV-RENT\\VUV-RENT\\kategorija.json";
-            string vozilaPutanja = "C:\\Users\\Akljucar\\source\\repos\\VUV-RENT\\VUV-RENT\\vozila.json";
-            string korisnikPutanja = "C:\\Users\\Akljucar\\source\\repos\\VUV-RENT\\VUV-RENT\\korisnik.json";
-            string rentaPutanja = "C:\\Users\\Akljucar\\source\\repos\\VUV-RENT\\VUV-RENT\\najam.json";
+            string kategorijePutanja = "C:\\Users\\AK\\source\\repos\\VUV-RENT\\VUV-RENT\\kategorija.json";
+            string vozilaPutanja = "C:\\Users\\AK\\source\\repos\\VUV-RENT\\VUV-RENT\\vozila.json";
+            string korisnikPutanja = "C:\\Users\\AK\\source\\repos\\VUV-RENT\\VUV-RENT\\korisnik.json";
+            string rentaPutanja = "C:\\Users\\AK\\source\\repos\\VUV-RENT\\VUV-RENT\\najam.json";
 
             IntPtr handle = GetConsoleWindow();
 
@@ -2696,6 +2796,7 @@ namespace VUV_RENT
                             {
                                 idTrenutnogKorisnika = user.id;
                                 Console.WriteLine("Uspješno ste se prijavili!");
+                                log(idTrenutnogKorisnika, "Uspješno ste se prijavili!");
                                 logged = true;
                                 found = true;
                                 break;
@@ -2705,17 +2806,29 @@ namespace VUV_RENT
                         if (!found)
                         {
                             Console.WriteLine("Uneseno korisnicko ime ili lozinka su neispravni.");
+                            log(idTrenutnogKorisnika, "Uneseno korisnicko ime ili lozinka su neispravni.");
                         }
 
                         break;
                     case 2:
-                    int c = lkorisnik.Count;
-                    lkorisnik.Add(Register(c, korisnikPutanja));
+         
+                        Console.WriteLine("Povratk? Upište Da za povrat ili enter za dalje.");
+                        string odabir = Console.ReadLine();
+                        if (odabir.ToLower() == "da")
+                        {
+                            goto logAfReg;
+                        }
+                        else {
+                            int c = lkorisnik.Count;
+                            lkorisnik.Add(Register(c, korisnikPutanja));
 
-                    SpremiKorisnike(lkorisnik , korisnikPutanja);
-                    goto logAfReg;
+                            SpremiKorisnike(lkorisnik, korisnikPutanja);
+                            goto logAfReg;
+                        }
+
                     default:
                     Console.WriteLine("Pogrešan unos.");
+                        log(idTrenutnogKorisnika, "Pogrešan unos.");
                     break;
 
             }
@@ -2757,13 +2870,13 @@ namespace VUV_RENT
                     case "2":
                         Console.Clear();
                         Console.WriteLine("2 - Pretrazivanje vozila");
-                        PretrazivanjeVozila(vozilaPutanja, kategorijePutanja);
+                        PretrazivanjeVozila(idTrenutnogKorisnika,vozilaPutanja, kategorijePutanja);
                         break;
 
                     case "3":
                         Console.Clear();
                         Console.WriteLine("3 - Iznajmi vozilo");
-                        RentajVozilo(vozilaPutanja, rentaPutanja, trenutniKorisnik.id, korisnikPutanja, kategorijePutanja);
+                        RentajVozilo(idTrenutnogKorisnika, vozilaPutanja, rentaPutanja, trenutniKorisnik.id, korisnikPutanja, kategorijePutanja);
                         break;
 
                     case "4":
@@ -2776,7 +2889,7 @@ namespace VUV_RENT
                     case "5" when trenutniKorisnik.Admin:
                         Console.Clear();
                         Console.WriteLine("5 - Povrat vozila");
-                        PovratVozila(rentaPutanja, vozilaPutanja, korisnikPutanja);
+                        PovratVozila(idTrenutnogKorisnika, rentaPutanja, vozilaPutanja, korisnikPutanja);
                         break;
 
                     case "6" when trenutniKorisnik.Admin:
@@ -2802,19 +2915,19 @@ namespace VUV_RENT
                                 List<Vozila> lVozila = new List<Vozila>();
                                 lVozila = JsonConvert.DeserializeObject<List<Vozila>>(json);
                                 Console.Clear();
-                                lVozila.Add(Dodavanje(vozilaPutanja));
+                                lVozila.Add(Dodavanje(idTrenutnogKorisnika, vozilaPutanja));
                                 SpremiVozilo(lVozila, vozilaPutanja);
 
                                 break;
                             case "2":
 
                                 Console.Clear();
-                                Azuriranje(vozilaPutanja, kategorijePutanja);
+                                Azuriranje(idTrenutnogKorisnika,vozilaPutanja, kategorijePutanja);
                                 break;
                             case "3":
 
                                 Console.Clear();
-                                Brisanje(vozilaPutanja, kategorijePutanja, rentaPutanja);
+                                Brisanje(idTrenutnogKorisnika,vozilaPutanja, kategorijePutanja, rentaPutanja);
                                 break;
                             default:
                                 Console.WriteLine("Neispravan odabir ili nemate ovlasti.");
@@ -2824,7 +2937,7 @@ namespace VUV_RENT
                     case "7" when trenutniKorisnik.Admin:
                         Console.Clear();
                         Console.WriteLine("7 - Statistika");
-                        Statistika(vozilaPutanja, kategorijePutanja , korisnikPutanja, rentaPutanja);
+                        Statistika(idTrenutnogKorisnika,vozilaPutanja, kategorijePutanja , korisnikPutanja, rentaPutanja);
                         
                         break;
                     default:

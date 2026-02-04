@@ -1,1 +1,45 @@
-﻿
+﻿ID:-1 Vrijeme: 4.2.2026. 19:22:02 Poruka: Uneseno korisnicko ime ili lozinka su neispravni.
+ID:0 Vrijeme: 4.2.2026. 19:22:10 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 19:22:35 Poruka: Vozilo je uspješno ažurirano.
+ID:0 Vrijeme: 4.2.2026. 19:23:09 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 19:23:20 Poruka: Korisnik ulazi u formu za rentu
+ID:0 Vrijeme: 4.2.2026. 19:23:44 Poruka: Rent uspjesan!!!
+ID:0 Vrijeme: 4.2.2026. 21:24:10 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 21:24:22 Poruka: Povrat uspješan.
+ID:0 Vrijeme: 4.2.2026. 21:25:34 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 21:26:02 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 21:26:05 Poruka: Povrat uspješan.
+ID:0 Vrijeme: 4.2.2026. 21:26:52 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 21:26:57 Poruka: Unos nije pronadjen ili je pogresan.
+ID:0 Vrijeme: 4.2.2026. 21:26:57 Poruka: Unos nije pronadjen ili je pogresan.
+ID:0 Vrijeme: 4.2.2026. 21:27:38 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 21:27:42 Poruka: Povrat uspješan.
+ID:0 Vrijeme: 4.2.2026. 21:29:51 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 21:29:53 Poruka: Korisnik ulazi u formu za rentu
+ID:0 Vrijeme: 4.2.2026. 21:29:59 Poruka: Nije moguće rentati vozilo u prošlosti.
+ID:0 Vrijeme: 4.2.2026. 21:30:07 Poruka: Nije moguće rentati vozilo u prošlosti.
+ID:0 Vrijeme: 4.2.2026. 21:30:15 Poruka: Neispravan format datuma. Pokušaj ponovno.
+ID:0 Vrijeme: 4.2.2026. 21:30:47 Poruka: Uneseni ID nije među dostupnim vozilima. Molimo odaberite ID iz tablice.
+ID:0 Vrijeme: 4.2.2026. 21:30:50 Poruka: Rent uspjesan!!!
+ID:0 Vrijeme: 4.2.2026. 21:31:14 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 21:31:23 Poruka: Korisnik ulazi u formu za rentu
+ID:0 Vrijeme: 4.2.2026. 21:31:43 Poruka: Rent uspjesan!!!
+ID:0 Vrijeme: 4.2.2026. 21:33:18 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 21:33:21 Poruka: Korisnik ulazi u formu za rentu
+ID:0 Vrijeme: 4.2.2026. 21:33:38 Poruka: Uneseni ID nije među dostupnim vozilima. Molimo odaberite ID iz tablice.
+ID:0 Vrijeme: 4.2.2026. 21:33:39 Poruka: Unos mora biti pozitivan cijeli broj.
+ID:0 Vrijeme: 4.2.2026. 21:33:39 Poruka: Unos mora biti pozitivan cijeli broj.
+ID:0 Vrijeme: 4.2.2026. 21:33:39 Poruka: Unos mora biti pozitivan cijeli broj.
+ID:0 Vrijeme: 4.2.2026. 21:33:40 Poruka: Rent uspjesan!!!
+ID:0 Vrijeme: 4.2.2026. 21:34:24 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 21:34:25 Poruka: Korisnik ulazi u formu za rentu
+ID:0 Vrijeme: 4.2.2026. 21:34:38 Poruka: Rent uspjesan!!!
+ID:0 Vrijeme: 4.2.2026. 21:35:01 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 21:35:03 Poruka: Korisnik ulazi u formu za rentu
+ID:0 Vrijeme: 4.2.2026. 21:35:43 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 21:35:50 Poruka: Korisnik ulazi u formu za rentu
+ID:0 Vrijeme: 4.2.2026. 21:36:24 Poruka: Uspješno ste se prijavili!
+ID:0 Vrijeme: 4.2.2026. 21:36:30 Poruka: Povrat uspješan.
+ID:0 Vrijeme: 4.2.2026. 21:36:35 Poruka: Korisnik ulazi u formu za rentu
+ID:0 Vrijeme: 4.2.2026. 21:36:45 Poruka: Rent uspjesan!!!
+ID:0 Vrijeme: 4.2.2026. 21:36:47 Poruka: Korisnik ulazi u formu za rentu
